@@ -1,6 +1,8 @@
-﻿using Bachelor_Net60.Services;
+﻿using Bachelor_Net60.Data;
+using Bachelor_Net60.Services;
 using Bachelor_Net60.ViewModels;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -21,11 +23,12 @@ namespace Bachelor_Net60
         private static IHost __Host;
 
         public static IHost Host => __Host ??= Microsoft.Extensions.Hosting.Host
-           .CreateDefaultBuilder(Environment.GetCommandLineArgs())
-           .ConfigureAppConfiguration(cfg => cfg.AddJsonFile("appsettings.json", true, true))
-           .ConfigureServices((host, services) => services
-               .AddViews()
-               .AddServices()
+            .CreateDefaultBuilder(Environment.GetCommandLineArgs())
+            .ConfigureAppConfiguration(cfg => cfg.AddJsonFile("appsettings.json", true, true))
+            .ConfigureServices((host, services) => services
+                .AddViews()
+                .AddServices()
+                .AddDatabase(host.Configuration.GetSection("Database"))
                 )
            .Build();
 
@@ -34,6 +37,10 @@ namespace Bachelor_Net60
         protected override async void OnStartup(StartupEventArgs e)
         {
             var host = Host;
+
+            using(var scope = Services.CreateScope())
+                scope.ServiceProvider.GetRequiredService<DbInitializer>().InitializeAsync().Wait();
+
             base.OnStartup(e);
             await host.StartAsync();
         }

@@ -1,13 +1,8 @@
-﻿using CifrovikDEL;
-using CifrovikDEL.Context;
+﻿using CifrovikDEL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bachelor_Net60.Data
 {
@@ -22,9 +17,14 @@ namespace Bachelor_Net60.Data
                     case null: throw new InvalidOperationException("Не определен тип БД");
                     default: throw new InvalidOperationException($"Тип подключения {type} не поддерживается");
                     case "MySQL":
+                        opt.UseMySql(configuration.GetConnectionString(type), new MySqlServerVersion(new Version(8, 0, 27)));
+                        break;
+                    case "MSSQL":
                         opt.UseSqlServer(configuration.GetConnectionString(type));
                         break;
                 }
-            });
+            })
+            .AddTransient<DbInitializer>()
+            ;
     }
 }
