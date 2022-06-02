@@ -2,7 +2,7 @@
 
 namespace CifrovikDEL.Entities
 {
-    public class Category : NamedEntity
+    public class Categories : NamedEntity
     {
     }
 }

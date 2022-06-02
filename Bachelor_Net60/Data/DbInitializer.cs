@@ -40,22 +40,22 @@ namespace Bachelor_Net60.Data
         }
 
         private const int __CategoriesCount = 10;
-        private Category[] _Categories;
+        private Categories[] _Categories;
         private async Task InitializeCategories()
         {
             var timer = Stopwatch.StartNew();
             _Logger.LogInformation("Инициализация Категорий...");
 
-            _Categories = new Category[__CategoriesCount];
+            _Categories = new Categories[__CategoriesCount];
             for (var i = 0; i < __CategoriesCount; i++)
-                _Categories[i] = new Category { Name = $"Категория {i + 1}" };
+                _Categories[i] = new Categories { Name = $"Категория {i + 1}" };
             await _db.Categories.AddRangeAsync(_Categories);
             await _db.SaveChangesAsync();
 
             _Logger.LogInformation("Инициализация Категорий выполнена за {0} мс", timer.ElapsedMilliseconds);
         }
         private const int __ProductsCount = 10;
-        private Product[] _Products;
+        private Products[] _Products;
         private async Task InitializeProducts()
         {
             var timer = Stopwatch.StartNew();
@@ -63,7 +63,7 @@ namespace Bachelor_Net60.Data
 
             var rnd = new Random();
             _Products = Enumerable.Range(1, __ProductsCount)
-                .Select(i => new Product
+                .Select(i => new Products
                 { 
                     Name = $"Продукт {i}",
                     Category = rnd.NewItem(_Categories)

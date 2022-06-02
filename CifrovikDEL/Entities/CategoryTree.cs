@@ -4,7 +4,7 @@ namespace CifrovikDEL.Entities
 {
     public class CategoryTree : Entity
     {
-        virtual public Category Ancestor { get; set; }
-        virtual public Category Descendant { get; set; }
+        virtual public Categories Ancestor { get; set; }
+        virtual public Categories Descendant { get; set; }
     }
 }
