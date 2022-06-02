@@ -1,5 +1,6 @@
 ﻿using Cifrovik.Interfaces;
 using CifrovikDEL.Context;
+using CifrovikDEL.Entities;
 using CifrovikDEL.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CifrovikDEL
 {
-    class DBRepository<T> : IRepository<T> where T : Entity, new()
+    internal class DBRepository<T> : IRepository<T> where T : Entity, new()
     {
         private readonly CifrovikDB _db;
         private readonly DbSet<T> _Set;
@@ -80,5 +81,11 @@ namespace CifrovikDEL
             if (AutosaveChanges)
                 await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
         }
+    }
+
+    class ProductRepository : DBRepository<Products>
+    {
+        public override IQueryable<Products> Items => base.Items.Include(item => item.Category);
+        public ProductRepository(CifrovikDB db) : base(db) { }
     }
 }

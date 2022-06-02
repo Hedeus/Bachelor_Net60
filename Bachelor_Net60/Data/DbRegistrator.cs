@@ -1,4 +1,5 @@
-﻿using CifrovikDEL.Context;
+﻿using CifrovikDEL;
+using CifrovikDEL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,7 @@ namespace Bachelor_Net60.Data
                 }
             })
             .AddTransient<DbInitializer>()
+            .AddRepositoriesInDB()
             ;
     }
 }

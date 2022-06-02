@@ -1,11 +1,16 @@
 ﻿using Bachelor_Net60.Services.Interfaces;
 using Bachelor_Net60.ViewModels.Base;
+using Cifrovik.Interfaces;
+using CifrovikDEL.Entities;
+using System.Linq;
 
 namespace Bachelor_Net60.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
         private readonly IUserDialog _UserDialog;
+        private readonly IRepository<Products> _ProductsRepository;
+
         //private readonly IDataService _DataService;
 
         #region Title : string - Заголовок окна
@@ -28,10 +33,13 @@ namespace Bachelor_Net60.ViewModels
 
         #endregion
 
-        public MainWindowViewModel(IUserDialog UserDialog/*, IDataService DataService*/)
+        public MainWindowViewModel(IUserDialog UserDialog,
+                                   IRepository<Products> ProductsRepository/*, IDataService DataService*/)
         {
             _UserDialog = UserDialog;
             //_DataService = DataService;
+            _ProductsRepository = ProductsRepository;
+            //var prod = ProductsRepository.Items.Take(10).ToArray();
         }
     }
 }
