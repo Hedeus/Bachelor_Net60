@@ -2,11 +2,15 @@
 using Bachelor_Net60.ViewModels.Base;
 using Cifrovik.Interfaces;
 using CifrovikDEL.Entities;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Bachelor_Net60.ViewModels
 {
-    internal class MainWindowViewModel : ViewModel
+    internal class ProductsManagementViewModel : ViewModel
     {
         private readonly IUserDialog _UserDialog;
         private readonly IRepository<Products> _ProductsRepository;
@@ -23,25 +27,12 @@ namespace Bachelor_Net60.ViewModels
 
         #endregion
 
-        #region Status : string - Статус
-
-        /// <summary>Статус</summary>
-        private string _Status = "Готов!";
-
-        /// <summary>Статус</summary>
-        public string Status { get => _Status; set => Set(ref _Status, value); }
-
-        #endregion
-
         /*--------------------------------------Конструктор---------------------------------------------*/
 
-        public MainWindowViewModel(IUserDialog UserDialog,
-                                   IRepository<Products> ProductsRepository/*, IDataService DataService*/)
+        ProductsManagementViewModel(IUserDialog UserDialog)
         {
             _UserDialog = UserDialog;
-            //_DataService = DataService;
-            _ProductsRepository = ProductsRepository;
-            //var prod = ProductsRepository.Items.Take(10).ToArray();
         }
+
     }
 }

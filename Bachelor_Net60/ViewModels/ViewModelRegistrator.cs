@@ -6,6 +6,7 @@ namespace Bachelor_Net60.ViewModels
     {
         public static IServiceCollection AddViews(this IServiceCollection services) => services
            .AddSingleton<MainWindowViewModel>()
+            .AddSingleton<ProductsManagementViewModel>()
         ;
     }
 }
