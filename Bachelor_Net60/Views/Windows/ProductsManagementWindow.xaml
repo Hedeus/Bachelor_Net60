@@ -5,9 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bachelor_Net60.Views.Windows"
         mc:Ignorable="d"
-        DataContext="{Binding ProductManagementViewModel, Source={StaticResource Locator}}"
+        DataContext="{Binding ProductsManagementModel, Source={StaticResource Locator}}"
         Title="{Binding Title}" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл"/>
+            <MenuItem Header="Сервис"/>
+            <MenuItem Header="Вид"/>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="Auto" MinWidth="30"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Header="Категории">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TreeView Grid.Row="0"  MinHeight="300"/>
+                    <StackPanel Grid.Row="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Margin="5">
+                        <Button Content="Добавить"
+                            Margin="3 10"
+                            Padding="0">
+
+                        </Button>
+                        <Button Content="Удалить"
+                            Margin="3 10"
+                            Padding="0">
+
+                        </Button>
+                        <Button Content="Редактировать"
+                            Margin="3 10"
+                            Padding="0">
+
+                        </Button>
+                    </StackPanel>                    
+                </Grid>                
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Услуги">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ListView Grid.Row="0"  MinHeight="300"/>
+                    <StackPanel Grid.Row="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Margin="5">
+                        <Button Content="Добавить"
+                            Margin="3 10"
+                            Padding="0">
+
+                        </Button>
+                        <Button Content="Удалить"
+                            Margin="3 10"
+                            Padding="0">
+
+                        </Button>
+                        <Button Content="Редактировать"
+                            Margin="3 10"
+                            Padding="0">
+
+                        </Button>
+                    </StackPanel>
+                </Grid>                
+            </GroupBox>
+            <GroupBox Grid.Column="2" Header="Редактирование">
+
+            </GroupBox>
+
+            <GridSplitter Grid.Column="0" HorizontalAlignment="Right" Width="3"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Right" Width="3"/>
+        </Grid>
+    </DockPanel>
 </Window>

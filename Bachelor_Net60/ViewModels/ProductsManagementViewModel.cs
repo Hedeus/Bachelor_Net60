@@ -20,7 +20,7 @@ namespace Bachelor_Net60.ViewModels
         #region Title : string - Заголовок окна
 
         /// <summary>Заголовок окна</summary>
-        private string _Title = "Главное окно";
+        private string _Title = "Управление услугами";
 
         /// <summary>Заголовок окна</summary>
         public string Title { get => _Title; set => Set(ref _Title, value); }
@@ -29,9 +29,12 @@ namespace Bachelor_Net60.ViewModels
 
         /*--------------------------------------Конструктор---------------------------------------------*/
 
-        ProductsManagementViewModel(IUserDialog UserDialog)
+        public ProductsManagementViewModel(IUserDialog UserDialog,
+                                    IRepository<Products> ProductsRepository
+            )
         {
             _UserDialog = UserDialog;
+            _ProductsRepository = ProductsRepository;
         }
 
     }
