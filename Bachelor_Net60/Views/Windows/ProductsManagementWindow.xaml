@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:local="clr-namespace:Bachelor_Net60.Views.Windows"
+        xmlns:tree="clr-namespace:Bachelor_Net60.ViewModels"
         mc:Ignorable="d"
         DataContext="{Binding ProductsManagementModel, Source={StaticResource Locator}}"
         Title="{Binding Title}" Height="450" Width="800">
@@ -25,27 +27,45 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TreeView Grid.Row="0"  MinHeight="300"/>
+                    <TreeView Grid.Row="0"
+                              MinHeight="300"
+                              DataContext="{Binding FullTreeModel, Source={StaticResource Locator}}"
+                              ItemsSource="{Binding Items}">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpander, Mode=TwoWay}"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type tree:TreeViewModel}" ItemsSource="{Binding Children}">
+                                <TreeViewItem Header="{Binding Node}" Foreground="{Binding Foreground}"/>
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                        
+                    </TreeView>
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
                                 Margin="5">
-                        <Button Content="Добавить"
-                            Margin="3 10"
-                            Padding="0">
-
+                        <Button Margin="3 10"
+                                Padding="0">                            
+                            <fa:ImageAwesome Icon="Solid_Plus"
+                                             Foreground="ForestGreen"
+                                             Height="13" Margin="5"/>                            
                         </Button>
-                        <Button Content="Удалить"
-                            Margin="3 10"
-                            Padding="0">
-
-                        </Button>
-                        <Button Content="Редактировать"
-                            Margin="3 10"
-                            Padding="0">
-
-                        </Button>
+                        <Button Margin="3 10"
+                                Padding="0">
+                            <fa:ImageAwesome Icon="Solid_Wrench"
+                                             Height="13" Margin="5"
+                                             Foreground="Blue"/>
+                        </Button>                        
+                        <Button Margin="20 10"
+                                Padding="0">
+                            <fa:ImageAwesome Icon="Solid_Trash"
+                                             Height="13" Margin="5"
+                                             Foreground="Red"/>
+                        </Button>                        
                     </StackPanel>                    
                 </Grid>                
             </GroupBox>
@@ -55,32 +75,53 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <ListView Grid.Row="0"  MinHeight="300"/>
+                    <ListView Grid.Row="0"  MinHeight="300"
+                              ItemsSource="{Binding Products}"/>
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
                                 Margin="5">
-                        <Button Content="Добавить"
-                            Margin="3 10"
-                            Padding="0">
-
+                        <Button Margin="3 10"
+                                Padding="0">
+                            <fa:ImageAwesome Icon="Solid_Plus"
+                                             Foreground="ForestGreen"
+                                             Height="13" Margin="5"/>
                         </Button>
-                        <Button Content="Удалить"
-                            Margin="3 10"
-                            Padding="0">
-
+                        <Button Margin="3 10"
+                                Padding="0">
+                            <fa:ImageAwesome Icon="Solid_Wrench"
+                                             Height="13" Margin="5"
+                                             Foreground="Blue"/>
                         </Button>
-                        <Button Content="Редактировать"
-                            Margin="3 10"
-                            Padding="0">
-
+                        <Button Margin="20 10"
+                                Padding="0">
+                            <fa:ImageAwesome Icon="Solid_Trash"
+                                             Height="13" Margin="5"
+                                             Foreground="Red"/>
                         </Button>
                     </StackPanel>
                 </Grid>                
             </GroupBox>
             <GroupBox Grid.Column="2" Header="Редактирование">
-
+                <Grid MinWidth="200" HorizontalAlignment="Left">                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Text="Категория" Margin="5"/>
+                        <TextBox Text="Выбранний продукт" Margin="5" Width="100"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Text="Название" Margin="5"/>
+                        <TextBox Text="Выбранний продукт" Margin="5" Width="100"/>
+                    </StackPanel>
+                    <DataGrid Grid.Row="2" MinHeight="100" Margin="5">
+                        
+                    </DataGrid>
+                </Grid>
             </GroupBox>
 
             <GridSplitter Grid.Column="0" HorizontalAlignment="Right" Width="3"/>
