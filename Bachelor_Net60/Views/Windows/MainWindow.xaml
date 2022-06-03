@@ -3,10 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands"
         xmlns:local="clr-namespace:Bachelor_Net60"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
         Title="{Binding Title}" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход">
+                    <MenuItem.Command>
+                        <cmd:ColseWindow/>
+                    </MenuItem.Command>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Правка"/>
+            <MenuItem Header="Вид"/>            
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="Auto" MinWidth="300"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Header="Услуги">
+                <TreeView/>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Заказ">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="0">
+                        
+                    </DataGrid>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Column="2" Header="Параметры заказа">
+                
+            </GroupBox>
+        </Grid>
+    </DockPanel>
 </Window>
