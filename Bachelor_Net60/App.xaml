@@ -9,6 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Infrastructure/Commands/Commands.xaml"/>
                 <ResourceDictionary Source="Resources/Base/Brushes.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Main.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <vm:ViewModelsLocator x:Key="Locator"/>
