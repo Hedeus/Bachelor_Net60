@@ -74,8 +74,8 @@ namespace CifrovikDEL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    AncestorId = table.Column<int>(type: "int", nullable: false),
-                    DescendantId = table.Column<int>(type: "int", nullable: false)
+                    AncestorId = table.Column<int>(type: "int", nullable: true),
+                    DescendantId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -84,14 +84,12 @@ namespace CifrovikDEL.Migrations
                         name: "FK_Tree_Categories_AncestorId",
                         column: x => x.AncestorId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tree_Categories_DescendantId",
                         column: x => x.DescendantId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -129,7 +127,7 @@ namespace CifrovikDEL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ProductsId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
                 },
@@ -137,8 +135,8 @@ namespace CifrovikDEL.Migrations
                 {
                     table.PrimaryKey("PK_Prices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Prices_Products_ProductsId",
-                        column: x => x.ProductsId,
+                        name: "FK_Prices_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -156,9 +154,10 @@ namespace CifrovikDEL.Migrations
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prices_ProductsId",
+                name: "IX_UnProdAmoPrice",
                 table: "Prices",
-                column: "ProductsId");
+                columns: new[] { "ProductId", "Amount", "Price" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -173,7 +172,8 @@ namespace CifrovikDEL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Tree_DescendantId",
                 table: "Tree",
-                column: "DescendantId");
+                column: "DescendantId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

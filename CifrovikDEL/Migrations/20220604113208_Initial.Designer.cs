@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CifrovikDEL.Migrations
 {
     [DbContext(typeof(CifrovikDB))]
-    [Migration("20220601140914_Initial")]
+    [Migration("20220604113208_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace CifrovikDEL.Migrations
                 .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("CifrovikDEL.Entities.Category", b =>
+            modelBuilder.Entity("CifrovikDEL.Entities.Categories", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,41 +42,20 @@ namespace CifrovikDEL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AncestorId")
+                    b.Property<int?>("AncestorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DescendantId")
+                    b.Property<int?>("DescendantId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AncestorId");
 
-                    b.HasIndex("DescendantId");
+                    b.HasIndex("DescendantId")
+                        .IsUnique();
 
                     b.ToTable("Tree");
-                });
-
-            modelBuilder.Entity("CifrovikDEL.Entities.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("options")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("CifrovikDEL.Entities.OrderDetails", b =>
@@ -103,7 +82,53 @@ namespace CifrovikDEL.Migrations
                     b.ToTable("Details");
                 });
 
-            modelBuilder.Entity("CifrovikDEL.Entities.Product", b =>
+            modelBuilder.Entity("CifrovikDEL.Entities.Orders", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("options")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("CifrovikDEL.Entities.ProductPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId", "Amount", "Price")
+                        .IsUnique()
+                        .HasDatabaseName("IX_UnProdAmoPrice");
+
+                    b.ToTable("Prices");
+                });
+
+            modelBuilder.Entity("CifrovikDEL.Entities.Products", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,41 +148,15 @@ namespace CifrovikDEL.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("CifrovikDEL.Entities.ProductPrice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("Prices");
-                });
-
             modelBuilder.Entity("CifrovikDEL.Entities.CategoryTree", b =>
                 {
-                    b.HasOne("CifrovikDEL.Entities.Category", "Ancestor")
+                    b.HasOne("CifrovikDEL.Entities.Categories", "Ancestor")
                         .WithMany()
-                        .HasForeignKey("AncestorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AncestorId");
 
-                    b.HasOne("CifrovikDEL.Entities.Category", "Descendant")
+                    b.HasOne("CifrovikDEL.Entities.Categories", "Descendant")
                         .WithMany()
-                        .HasForeignKey("DescendantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DescendantId");
 
                     b.Navigation("Ancestor");
 
@@ -166,13 +165,13 @@ namespace CifrovikDEL.Migrations
 
             modelBuilder.Entity("CifrovikDEL.Entities.OrderDetails", b =>
                 {
-                    b.HasOne("CifrovikDEL.Entities.Order", "Order")
+                    b.HasOne("CifrovikDEL.Entities.Orders", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CifrovikDEL.Entities.Product", "Products")
+                    b.HasOne("CifrovikDEL.Entities.Products", "Products")
                         .WithMany()
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -183,26 +182,26 @@ namespace CifrovikDEL.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("CifrovikDEL.Entities.Product", b =>
+            modelBuilder.Entity("CifrovikDEL.Entities.ProductPrice", b =>
                 {
-                    b.HasOne("CifrovikDEL.Entities.Category", "Category")
+                    b.HasOne("CifrovikDEL.Entities.Products", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("CifrovikDEL.Entities.Products", b =>
+                {
+                    b.HasOne("CifrovikDEL.Entities.Categories", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("CifrovikDEL.Entities.ProductPrice", b =>
-                {
-                    b.HasOne("CifrovikDEL.Entities.Product", "Products")
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

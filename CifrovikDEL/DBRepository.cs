@@ -25,14 +25,14 @@ namespace CifrovikDEL
         public virtual IQueryable<T> Items => _Set;
 
         public T Get(int id) => Items.SingleOrDefault(item => item.Id == id);
-        
+
         public async Task<T> GetAsync(int id, CancellationToken Cancel = default) => await Items
             .SingleOrDefaultAsync(item => item.Id == id, Cancel)
-            .ConfigureAwait(false);   
+            .ConfigureAwait(false);
 
         public T Add(T item)
         {
-            if(item is null) throw new ArgumentNullException(nameof(item));
+            if (item is null) throw new ArgumentNullException(nameof(item));
             _db.Entry(item).State = EntityState.Added;
             if (AutosaveChanges)
                 _db.SaveChanges();
@@ -81,6 +81,7 @@ namespace CifrovikDEL
             if (AutosaveChanges)
                 await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
         }
+
     }
 
     class ProductRepository : DBRepository<Products>

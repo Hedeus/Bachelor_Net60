@@ -1,4 +1,5 @@
-﻿using Bachelor_Net60.Services.Interfaces;
+﻿using Bachelor_Net60.Infrastructure.Commands;
+using Bachelor_Net60.Services.Interfaces;
 using Bachelor_Net60.ViewModels.Base;
 using Cifrovik.Interfaces;
 using CifrovikDEL.Entities;
@@ -8,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Bachelor_Net60.ViewModels
 {
@@ -15,10 +17,18 @@ namespace Bachelor_Net60.ViewModels
     {
         private readonly IUserDialog _UserDialog;
         private readonly IRepository<Products> _ProductsRepository;
+        private readonly IRepository<Categories> _CategoriesRepository;
 
         public Products[] Products { get; set; }
 
-        //private readonly IDataService _DataService;
+        #region CurrentModel
+        private ViewModel _CurrentModel;
+        public ViewModel CurrentModel
+        {
+            get => _CurrentModel;
+            private set => Set(ref _CurrentModel, value);
+        }
+        #endregion
 
         #region Title : string - Заголовок окна
 
@@ -28,6 +38,31 @@ namespace Bachelor_Net60.ViewModels
         /// <summary>Заголовок окна</summary>
         public string Title { get => _Title; set => Set(ref _Title, value); }
 
+        #endregion
+
+
+        /*----------------------------------------Команды---------------------------------------------*/
+
+        #region AddCategoryCommand
+        private ICommand _AddCategoryCommand;
+        public ICommand AddCategoryCommand => _AddCategoryCommand
+            ??= new LambdaCommand(OnAddCategoryCommandExecuted, CanAddCategoryCommandExecute);
+        private bool CanAddCategoryCommandExecute() => true;
+        private void OnAddCategoryCommandExecuted()
+        {
+            CurrentModel = new CategoryEditViewModel(_CategoriesRepository);
+        }
+        #endregion
+
+        #region AddProductCommand
+        private ICommand _AddProductCommand;
+        public ICommand AddProductCommand => _AddProductCommand
+            ??= new LambdaCommand(OnAddProductCommandExecuted, CanAddProductCommandExecute);
+        private bool CanAddProductCommandExecute() => true;
+        private void OnAddProductCommandExecuted()
+        {
+            CurrentModel = new ProductEditViewModel(_ProductsRepository);
+        }
         #endregion
 
         /*--------------------------------------Конструктор---------------------------------------------*/
