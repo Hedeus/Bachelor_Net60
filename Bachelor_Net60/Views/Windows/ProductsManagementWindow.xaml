@@ -30,10 +30,17 @@
                     <TreeView Grid.Row="0"
                               MinHeight="300"
                               DataContext="{Binding FullTreeModel, Source={StaticResource Locator}}"
-                              ItemsSource="{Binding Items}">
+                              ItemsSource="{Binding Items}">                        
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="{x:Type TreeViewItem}">
-                                <Setter Property="IsExpanded" Value="{Binding IsExpander, Mode=TwoWay}"/>
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Trigger>                                             
+                                </Style.Triggers>
                             </Style>
                         </TreeView.ItemContainerStyle>
                         <TreeView.Resources>
@@ -41,7 +48,7 @@
                                 <TreeViewItem Header="{Binding Node}" Foreground="{Binding Foreground}"/>
                             </HierarchicalDataTemplate>
                         </TreeView.Resources>
-                        
+                        <!--<TreeViewItem Selected="{Binding SelectedCategory}"/>-->
                     </TreeView>
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
@@ -114,24 +121,7 @@
                         </ResourceDictionary.MergedDictionaries>
                     </ResourceDictionary>
                 </GroupBox.Resources>-->
-                <!--<Grid MinWidth="200" HorizontalAlignment="Left">                    
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock Text="Категория" Margin="5"/>
-                        <TextBox Text="Выбранний продукт" Margin="5" Width="100"/>
-                    </StackPanel>
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock Text="Название" Margin="5"/>
-                        <TextBox Text="Выбранний продукт" Margin="5" Width="100"/>
-                    </StackPanel>
-                    <DataGrid Grid.Row="2" MinHeight="100" Margin="5">
-                        
-                    </DataGrid>
-                </Grid>-->
+               
                 <ContentControl Content="{Binding CurrentModel}"/>
             </GroupBox>
 

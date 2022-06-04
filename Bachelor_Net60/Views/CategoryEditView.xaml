@@ -6,11 +6,25 @@
              xmlns:local="clr-namespace:Bachelor_Net60.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   FontSize="50"
-                   FontWeight="Bold"
-                   Text="Редактор категорий"/>
+    <Grid MinWidth="200" HorizontalAlignment="Left">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="Имя категории" Margin="5"/>
+            <TextBox Text="Имя категории" Margin="5" Width="100"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="Предок" Margin="5"/>
+            <TextBox Text="Выбранний продукт"
+                     Margin="5" Width="100"
+                     Focusable="False"/>
+        </StackPanel>
+        <Button Grid.Row="2"
+                HorizontalAlignment="Center"
+                Margin="5"
+                Content="Сохранить"/>
     </Grid>
 </UserControl>

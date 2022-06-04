@@ -10,7 +10,7 @@ namespace Bachelor_Net60.ViewModels
     {
         public ObservableCollection<TreeViewModel> Items { get; set; } = new ObservableCollection<TreeViewModel>();
         private readonly IRepository<Categories> _Categories;
-        private readonly IRepository<CategoryTree> _Tree;
+        private readonly IRepository<CategoryTree> _Tree; 
 
         private TreeViewModel? AddItem(Categories Cat)
         {

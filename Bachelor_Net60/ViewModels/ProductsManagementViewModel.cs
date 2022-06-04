@@ -20,6 +20,12 @@ namespace Bachelor_Net60.ViewModels
         private readonly IRepository<Categories> _CategoriesRepository;
 
         public Products[] Products { get; set; }
+        //private TreeViewModel _SelectedCategory;
+        //public TreeViewModel SelectedCategory
+        //{
+        //    get => _SelectedCategory;
+        //    set => Set(ref _SelectedCategory, value);
+        //} 
 
         #region CurrentModel
         private ViewModel _CurrentModel;
@@ -74,7 +80,7 @@ namespace Bachelor_Net60.ViewModels
             _UserDialog = UserDialog;
             _ProductsRepository = ProductsRepository;
             Products = ProductsRepository.Items.Take(ProductsRepository.Items.Count()).ToArray();
-
+            //Title = SelectedCategory
         }
 
     }
