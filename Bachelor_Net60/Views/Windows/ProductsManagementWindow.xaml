@@ -49,10 +49,12 @@
                                 VerticalAlignment="Top"
                                 Margin="5">
                         <Button Margin="3 10"
-                                Padding="0">                            
+                                Padding="0"
+                                Command="{Binding AddCategoryCommand}">                            
                             <fa:ImageAwesome Icon="Solid_Plus"
                                              Foreground="ForestGreen"
-                                             Height="13" Margin="5"/>                            
+                                             Height="13" Margin="5"/>
+                            
                         </Button>
                         <Button Margin="3 10"
                                 Padding="0">
@@ -83,7 +85,8 @@
                                 VerticalAlignment="Top"
                                 Margin="5">
                         <Button Margin="3 10"
-                                Padding="0">
+                                Padding="0"
+                                Command="{Binding AddProductCommand}">
                             <fa:ImageAwesome Icon="Solid_Plus"
                                              Foreground="ForestGreen"
                                              Height="13" Margin="5"/>
@@ -104,7 +107,14 @@
                 </Grid>                
             </GroupBox>
             <GroupBox Grid.Column="2" Header="Редактирование">
-                <Grid MinWidth="200" HorizontalAlignment="Left">                    
+                <!--<GroupBox.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="../../Resources/Templates/ModelManagerViews.xaml"/>
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </GroupBox.Resources>-->
+                <!--<Grid MinWidth="200" HorizontalAlignment="Left">                    
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -121,7 +131,8 @@
                     <DataGrid Grid.Row="2" MinHeight="100" Margin="5">
                         
                     </DataGrid>
-                </Grid>
+                </Grid>-->
+                <ContentControl Content="{Binding CurrentModel}"/>
             </GroupBox>
 
             <GridSplitter Grid.Column="0" HorizontalAlignment="Right" Width="3"/>
