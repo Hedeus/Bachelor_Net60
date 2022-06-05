@@ -1,4 +1,5 @@
 ﻿using Bachelor_Net60.Infrastructure.Commands;
+using Bachelor_Net60.Infrastructure.Commands.Base;
 using Bachelor_Net60.Services.Interfaces;
 using Bachelor_Net60.Services.ProductsCategories;
 using Bachelor_Net60.ViewModels.Base;
@@ -22,18 +23,19 @@ namespace Bachelor_Net60.ViewModels
         private readonly ProductsManager _ProductsManager;
         public ObservableCollection<TreeViewModel> Items { get; set; } = new ObservableCollection<TreeViewModel>();
         public IQueryable<Categories> Cats => _ProductsManager.Cats;
-        public IQueryable<Products> Prods => _ProductsManager.Prods;
+        public IEnumerable<Products> Prods => _ProductsManager.Prods;
         public IQueryable<ProductPrice> Prices => _ProductsManager.Prices;
         public IQueryable<CategoryTree> Tree => _ProductsManager.Tree;
 
-
-        //public Products[] Products { get; set; }
-        //private TreeViewModel _SelectedCategory;
-        //public TreeViewModel SelectedCategory
-        //{
-        //    get => _SelectedCategory;
-        //    set => Set(ref _SelectedCategory, value);
-        //} 
+        #region SelCatProducts : IEnumerable<Products> - Продукты выбранной категории
+        private IEnumerable<Products> _SelCatProducts = null;
+        public IEnumerable<Products> SelCatProducts
+        {
+            get => _SelCatProducts;
+            //set => Set(ref _SelCatProducts, SelectedCategory == null ? null : Prods.Where(i => i.Category == SelectedCategory.Node));
+            set => Set(ref _SelCatProducts, value);
+        }   
+        #endregion
 
         #region CurrentModel : ViewModel - текущая вьюмодель (редактирование, добавление, удаление категорий или продуктов)
         private ViewModel _CurrentModel;
@@ -45,14 +47,16 @@ namespace Bachelor_Net60.ViewModels
         #endregion
 
         #region SelectedCategory : TreeViewModel - Выбранная категория
-        private TreeViewModel _SelectedCategory;
+        private TreeViewModel _SelectedCategory = null;
         public TreeViewModel SelectedCategory 
         {
             get => _SelectedCategory;
-            set => Set(ref _SelectedCategory, value);
-             //if (!(_SelectedCategory is null))
-             //    Title = _SelectedCategory.Node.ToString();
-                      
+            //set => Set(ref _SelectedCategory, value);
+            set
+            {
+                Set(ref _SelectedCategory, value);
+                SelCatProducts = SelectedCategory == null ? Prods : Prods.Where(i => i.Category == SelectedCategory.Node);
+            }         
         }
         #endregion
 
@@ -86,30 +90,31 @@ namespace Bachelor_Net60.ViewModels
             }
             var Item = new TreeViewModel(Cat, children: childCollection);
             return Item;
-        } 
+        }
         #endregion
 
         /*----------------------------------------Команды---------------------------------------------*/
 
-        #region AddCategoryCommand
-        private ICommand _AddCategoryCommand;
-        public ICommand AddCategoryCommand => _AddCategoryCommand
-            ??= new LambdaCommand(OnAddCategoryCommandExecuted, CanAddCategoryCommandExecute);
-        private bool CanAddCategoryCommandExecute() => true;
-        private void OnAddCategoryCommandExecuted()
+        #region AddCategoryViewCommand
+        private ICommand _AddCategoryViewCommand;
+        public ICommand AddCategoryViewCommand => _AddCategoryViewCommand
+            ??= new LambdaCommand(OnAddCategoryViewCommandExecuted, CanAddCategoryViewCommandExecute);
+        private bool CanAddCategoryViewCommandExecute() => true;
+        private void OnAddCategoryViewCommandExecuted()
         {
             CurrentModel = new CategoryEditViewModel(_ProductsManager);
         }
         #endregion
 
-        #region AddProductCommand
-        private ICommand _AddProductCommand;
-        public ICommand AddProductCommand => _AddProductCommand
-            ??= new LambdaCommand(OnAddProductCommandExecuted, CanAddProductCommandExecute);
-        private bool CanAddProductCommandExecute() => true;
-        private void OnAddProductCommandExecuted()
+        #region AddProductCommandViewCommand
+        private Command _AddProductViewCommand;
+        public Command AddProductViewCommand => _AddProductViewCommand
+            ??= new LambdaCommand(OnAddProductViewCommandExecuted, CanAddProductViewCommandExecute);
+        private bool CanAddProductViewCommandExecute(object p) => SelectedCategory != null;
+        private void OnAddProductViewCommandExecuted(object p)
         {
-            CurrentModel = new ProductEditViewModel(_ProductsManager);
+            Categories selCat = (Categories)((TreeViewModel)p).Node;
+            CurrentModel = new ProductEditViewModel(_ProductsManager, selCat, true);
         }
         #endregion
 
@@ -123,10 +128,7 @@ namespace Bachelor_Net60.ViewModels
                                           )
         {
             _UserDialog = UserDialog;            
-            _ProductsManager = ProdManager;
-
-            //if (SelectedCategory != null)
-            //    Title = SelectedCategory.ToString();
+            _ProductsManager = ProdManager;            
 
             var ancestorIsNull = (from c in Cats
                                   join t in Tree on c.Id equals t.DescendantId into CategoryInTree
@@ -144,7 +146,7 @@ namespace Bachelor_Net60.ViewModels
                     chilCollection.Add(new TreeViewModel(AddNode(child)));
                 }
                 Items.Add(new TreeViewModel(cat, children: chilCollection));
-            }
+            }            
         }
     }
 }

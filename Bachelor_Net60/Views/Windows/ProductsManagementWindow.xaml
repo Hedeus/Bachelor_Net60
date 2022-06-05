@@ -33,7 +33,7 @@
                               DataContext="{Binding FullTreeModel, Source={StaticResource Locator}}"
                               ItemsSource="{Binding Items}">-->
                     <TreeView Grid.Row="0"
-                              MinHeight="300"                              
+                              MinHeight="300"                               
                               ItemsSource="{Binding Items}">
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="{x:Type TreeViewItem}">
@@ -51,7 +51,7 @@
                             <HierarchicalDataTemplate DataType="{x:Type tree:TreeViewModel}" ItemsSource="{Binding Children}">
                                 <TreeViewItem Header="{Binding Node}" Foreground="{Binding Foreground}"/>
                             </HierarchicalDataTemplate>
-                        </TreeView.Resources>
+                        </TreeView.Resources>                        
                         <i:Interaction.Behaviors>
                             <behaviors:BindableSelectedItemBehavior2 SelectedItem="{Binding SelectedCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </i:Interaction.Behaviors>
@@ -63,7 +63,7 @@
                                 Margin="5">
                         <Button Margin="3 10"
                                 Padding="0"
-                                Command="{Binding AddCategoryCommand}">                            
+                                Command="{Binding AddCategoryViewCommand}">                            
                             <fa:ImageAwesome Icon="Solid_Plus"
                                              Foreground="ForestGreen"
                                              Height="13" Margin="5"/>
@@ -91,7 +91,9 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <ListView Grid.Row="0"  MinHeight="300"
-                              ItemsSource="{Binding Prods}"/>
+                              SelectedIndex="0"
+                              ItemsSource="{Binding SelCatProducts}"
+                              SelectedItem="{Binding SelectedProduct}"/>
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center"
@@ -99,7 +101,7 @@
                                 Margin="5">
                         <Button Margin="3 10"
                                 Padding="0"
-                                Command="{Binding AddProductCommand}">
+                                Command="{Binding AddProductViewCommand}">
                             <fa:ImageAwesome Icon="Solid_Plus"
                                              Foreground="ForestGreen"
                                              Height="13" Margin="5"/>

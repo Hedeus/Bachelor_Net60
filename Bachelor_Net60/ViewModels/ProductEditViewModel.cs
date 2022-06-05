@@ -13,9 +13,10 @@ namespace Bachelor_Net60.ViewModels
     internal class ProductEditViewModel : ViewModel
     {
         private readonly ProductsManager _ProdManager;
+
         //private IRepository<Products> _Products;
 
-        public ProductEditViewModel(ProductsManager ProdManager)
+        public ProductEditViewModel(ProductsManager ProdManager, Categories SelectedCategory, bool IsAdd = false)
         {
             //_Products = ProductRepository;
             _ProdManager = ProdManager;
