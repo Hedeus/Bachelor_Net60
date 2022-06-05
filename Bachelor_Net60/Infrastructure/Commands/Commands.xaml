@@ -4,5 +4,6 @@
 
     <l:ColseWindow x:Key="CloseWindowCommand"/>
     <l:ManageProductsCommand x:Key="ManageProductsCommand"/>
+    <l:CancelEditCommand x:Key="CancelEditCommand"/>
 
 </ResourceDictionary>

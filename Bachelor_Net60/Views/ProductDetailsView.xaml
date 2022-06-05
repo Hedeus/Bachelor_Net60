@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Bachelor_Net60.Views.ProductEditView"
+﻿<UserControl x:Class="Bachelor_Net60.Views.ProductDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d" 
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,8 +7,8 @@
              xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands"             
              d:DesignHeight="200" d:DesignWidth="200"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    
-    <Grid MinWidth="200" HorizontalAlignment="Left">                    
+
+    <Grid MinWidth="200" HorizontalAlignment="Left">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -26,24 +26,24 @@
             <TextBox Text="{Binding ProductName}" Margin="5" Width="100"/>
         </StackPanel>
         <DataGrid Grid.Row="2" MinHeight="100" Margin="5">
-            
+
         </DataGrid>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Grid.Row="3"
                     HorizontalAlignment="Center"
                     Margin="5"
                     IsDefault="True"
-                    Content="Сохранить"/>
+                    Content="Редактировать"/>
             <Button Grid.Row="3"
                     HorizontalAlignment="Center"
                     Margin="5"
                     IsCancel="True"
-                    Content="Отмена"
+                    Content="Удалить"
                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:ProductEditView}}">
                 <Button.Command>
                     <cmd:CancelEditCommand DialogResult="False"/>
                 </Button.Command>
             </Button>
-        </StackPanel>       
-    </Grid>    
+        </StackPanel>
+    </Grid>
 </UserControl>

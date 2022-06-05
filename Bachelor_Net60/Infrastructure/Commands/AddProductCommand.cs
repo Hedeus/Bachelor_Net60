@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace Bachelor_Net60.Infrastructure.Commands
 {
     internal class AddProductCommand : Command
-    {
-        protected override bool CanExecute(object p) => p is Categories;
+    {        
         protected override void Execute(object p)
         {
             throw new NotImplementedException();

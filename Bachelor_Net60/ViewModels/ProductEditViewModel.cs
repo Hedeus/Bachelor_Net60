@@ -16,10 +16,14 @@ namespace Bachelor_Net60.ViewModels
 
         //private IRepository<Products> _Products;
 
-        public ProductEditViewModel(ProductsManager ProdManager, Categories SelectedCategory, bool IsAdd = false)
+        //public ProductEditViewModel(ProductsManager ProdManager, Categories SelectedCategory, bool IsAdd = false)
+        //{
+        //    //_Products = ProductRepository;
+        //    _ProdManager = ProdManager;
+        //}
+        public ProductEditViewModel()
         {
-            //_Products = ProductRepository;
-            _ProdManager = ProdManager;
+
         }
     }
 }

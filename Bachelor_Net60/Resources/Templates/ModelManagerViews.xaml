@@ -16,4 +16,9 @@
     <DataTemplate DataType="{x:Type vm:ProductEditViewModel}">
         <view:ProductEditView DataContext="{Binding}"/>
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ProductDetailsViewModel}">
+        <view:ProductDetailsView DataContext="{Binding}"/>
+    </DataTemplate>
+    
 </ResourceDictionary>

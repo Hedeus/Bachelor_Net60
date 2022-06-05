@@ -113,8 +113,23 @@ namespace Bachelor_Net60.ViewModels
         private bool CanAddProductViewCommandExecute(object p) => SelectedCategory != null;
         private void OnAddProductViewCommandExecuted(object p)
         {
-            Categories selCat = (Categories)((TreeViewModel)p).Node;
-            CurrentModel = new ProductEditViewModel(_ProductsManager, selCat, true);
+            Categories selCat = (Categories)SelectedCategory.Node;
+            //CurrentModel = new ProductEditViewModel(_ProductsManager, selCat, true);
+            CurrentModel = new ProductEditViewModel()
+            {
+                
+            };
+        }
+        #endregion
+
+        #region ShowProducDetailsCommand
+        private Command _ShowProducDetailsCommand;
+        public Command ShowProducDetailsCommand => _ShowProducDetailsCommand
+            ??= new LambdaCommand(OnShowProducDetailsCommandExecuted, CanShowProducDetailsCommandExecute);
+        private bool CanShowProducDetailsCommandExecute() => true;
+        private void OnShowProducDetailsCommandExecuted()
+        {
+            CurrentModel = new ProductDetailsViewModel();
         }
         #endregion
 
