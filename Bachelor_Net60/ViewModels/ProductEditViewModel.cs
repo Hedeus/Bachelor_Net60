@@ -11,8 +11,22 @@ using System.Threading.Tasks;
 namespace Bachelor_Net60.ViewModels
 {
     internal class ProductEditViewModel : ViewModel
-    {
-        private readonly ProductsManager _ProdManager;
+    {        
+        private readonly ProductsManager _ProductsManager;
+
+        private Categories _Category;
+        public Categories Category
+        {
+            get => _Category;
+            set => Set(ref _Category, _ProductsManager.SelectedCategory);
+        }
+
+        private Products _Product;
+        public Products Product
+        {
+            get => _Product;
+            set => Set(ref _Product, _ProductsManager.SelectedProduct);
+        }
 
         //private IRepository<Products> _Products;
 
@@ -21,9 +35,9 @@ namespace Bachelor_Net60.ViewModels
         //    //_Products = ProductRepository;
         //    _ProdManager = ProdManager;
         //}
-        public ProductEditViewModel()
+        public ProductEditViewModel(ProductsManager productsManager, bool IsAdd)
         {
-
+            _ProductsManager = productsManager;
         }
     }
 }

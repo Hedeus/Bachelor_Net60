@@ -56,13 +56,23 @@ namespace Bachelor_Net60.ViewModels
             {
                 Set(ref _SelectedCategory, value);
                 SelCatProducts = SelectedCategory == null ? Prods : Prods.Where(i => i.Category == SelectedCategory.Node);
+                _ProductsManager.SelectedCategory = SelectedCategory == null ? null : (Categories)SelectedCategory.Node;
             }         
         }
         #endregion
 
         #region SelectedProduct : Products - Выбранный продукт
         private Products _SelectedProduct;
-        public Products SelectedProduct { get => _SelectedProduct; set => Set(ref _SelectedProduct, value); }
+        public Products SelectedProduct
+        {
+            get => _SelectedProduct;
+            set
+            {
+                Set(ref _SelectedProduct, value);
+                _ProductsManager.SelectedProduct = value;
+                _ProductsManager.SelectedProductPrice = Prices.Where(i => i.ProductId == value.Id);
+            }
+        }
         #endregion
 
         #region Title : string - Заголовок окна
@@ -113,12 +123,7 @@ namespace Bachelor_Net60.ViewModels
         private bool CanAddProductViewCommandExecute(object p) => SelectedCategory != null;
         private void OnAddProductViewCommandExecuted(object p)
         {
-            Categories selCat = (Categories)SelectedCategory.Node;
-            //CurrentModel = new ProductEditViewModel(_ProductsManager, selCat, true);
-            CurrentModel = new ProductEditViewModel()
-            {
-                
-            };
+            CurrentModel = new ProductEditViewModel(_ProductsManager, true);            
         }
         #endregion
 
@@ -149,7 +154,7 @@ namespace Bachelor_Net60.ViewModels
                                   join t in Tree on c.Id equals t.DescendantId into CategoryInTree
                                   from subc in CategoryInTree.DefaultIfEmpty()
                                   where subc.AncestorId == null                                  
-                                  select c).ToList();
+                                  select c ).ToList();
 
             foreach (var cat in ancestorIsNull)
             {

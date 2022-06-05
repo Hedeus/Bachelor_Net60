@@ -7,8 +7,10 @@ namespace Bachelor_Net60.ViewModels
         public static IServiceCollection AddViews(this IServiceCollection services) => services
             .AddSingleton<MainWindowViewModel>()
             .AddTransient<ProductsManagementViewModel>()
-            //.AddTransient<TreeViewModel>()
-            //.AddSingleton<FullTreeViewModel>()
+
+        //.AddTransient<ProductEditViewModel>()
+        //.AddTransient<CategoryEditViewModel>()
+        //.AddTransient<ProductDetailsViewModel>()
         ;
     }
 }

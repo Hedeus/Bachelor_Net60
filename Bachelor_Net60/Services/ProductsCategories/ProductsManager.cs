@@ -18,7 +18,12 @@ namespace Bachelor_Net60.Services.ProductsCategories
         public IQueryable<Products> Prods => _Products.Items;
         public IQueryable<Categories> Cats => _Categories.Items;
         public IQueryable<ProductPrice> Prices => _ProductPrice.Items;
-        public IQueryable<CategoryTree> Tree => _CatsTree.Items;       
+        public IQueryable<CategoryTree> Tree => _CatsTree.Items;
+
+        public Products SelectedProduct { get; set; }
+        public Categories SelectedCategory{ get; set; }
+        public IEnumerable<ProductPrice> SelectedProductPrice { get; set; }
+        //public CategoryTree SelectedCategoryTree { get; set;}
 
         public ProductsManager(IRepository<Categories> categories,
                                IRepository<Products> products,
@@ -30,6 +35,18 @@ namespace Bachelor_Net60.Services.ProductsCategories
             _ProductPrice = productPrice;
             _CatsTree = CatsTree;
         }
+
+        public  void ProductsUpdate(Products Product) =>  _Products.Update(Product);
+        public async void ProductsUpdateAsync(Products Product) => await _Products.UpdateAsync(Product);
+
+        public void CategoriesUpdate(Categories Category) => _Categories.Update(Category);
+        public async void CategoriesUpdateAsync(Categories Category) => await _Categories.UpdateAsync(Category);
+
+        public void ProductPriceUpdate(ProductPrice productPrice) => _ProductPrice.Update(productPrice);
+        public async void ProductPriceUpdateAsync(ProductPrice productPrice) => await _ProductPrice.UpdateAsync(productPrice);
+
+        public void CategoryTreeUpdate(CategoryTree categorisTree) => _CatsTree.Update(categorisTree);
+        public async void CategoryTreeUpdateAsync(CategoryTree categorisTree) => await _CatsTree.UpdateAsync(categorisTree);
 
     }
 }

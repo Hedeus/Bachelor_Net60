@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Bachelor_Net60.Views"
-             xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands"             
-             d:DesignHeight="200" d:DesignWidth="200"
-             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+             xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands"
+             xmlns:vm="clr-namespace:Bachelor_Net60.ViewModels"
+             d:DesignHeight="200" d:DesignWidth="200">
+    <!--DataContext="{Binding ProductsEditModel, Source={StaticResource Locator}}-->
+    <!--DataContext="{Binding RelativeSource={RelativeSource Self}}">-->
     
     <Grid MinWidth="200" HorizontalAlignment="Left">                    
         <Grid.RowDefinitions>
@@ -23,7 +25,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBlock Text="Название" Margin="5"/>
-            <TextBox Text="{Binding ProductName}" Margin="5" Width="100"/>
+            <TextBox Text="{Binding Product}" Margin="5" Width="100"/>
         </StackPanel>
         <DataGrid Grid.Row="2" MinHeight="100" Margin="5">
             
