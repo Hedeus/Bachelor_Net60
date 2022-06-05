@@ -16,7 +16,7 @@ namespace CifrovikDEL
             .AddTransient<IRepository<CategoryTree>, DBRepository<CategoryTree>>()
             .AddTransient<IRepository<OrderDetails>, DBRepository<OrderDetails>>()
             .AddTransient<IRepository<Orders>, DBRepository<Orders>>()
-            .AddTransient<IRepository<ProductPrice>, DBRepository<ProductPrice>>()
+            .AddTransient<IRepository<ProductPrice>, PriceRepository>()
             .AddTransient<IRepository<Products>, ProductRepository>()
             ;        
     }

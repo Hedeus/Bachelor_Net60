@@ -8,7 +8,7 @@ namespace Bachelor_Net60.ViewModels
             .AddSingleton<MainWindowViewModel>()
             .AddSingleton<ProductsManagementViewModel>()
             //.AddTransient<TreeViewModel>()
-            .AddSingleton<FullTreeViewModel>()
+            //.AddSingleton<FullTreeViewModel>()
         ;
     }
 }

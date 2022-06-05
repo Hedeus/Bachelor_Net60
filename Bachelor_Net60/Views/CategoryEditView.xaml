@@ -13,15 +13,15 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <TextBlock Text="Имя категории" Margin="5"/>
+            <TextBlock Text="Новая категория" Margin="5"/>
             <TextBox Text="Имя категории" Margin="5" Width="100"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <!--<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBlock Text="Предок" Margin="5"/>
             <TextBox Text="Выбранний продукт"
                      Margin="5" Width="100"
                      Focusable="False"/>
-        </StackPanel>
+        </StackPanel>-->
         <Button Grid.Row="2"
                 HorizontalAlignment="Center"
                 Margin="5"

@@ -1,4 +1,5 @@
-﻿using Bachelor_Net60.ViewModels.Base;
+﻿using Bachelor_Net60.Services.ProductsCategories;
+using Bachelor_Net60.ViewModels.Base;
 using Cifrovik.Interfaces;
 using CifrovikDEL.Entities;
 using System;
@@ -12,11 +13,13 @@ namespace Bachelor_Net60.ViewModels
     
     internal class CategoryEditViewModel : ViewModel
     {
-        private readonly IRepository<Categories> _Categories;
+        //private readonly IRepository<Categories> _Categories;
+        private readonly ProductsManager _ProdManager;
 
-        public CategoryEditViewModel(IRepository<Categories> CategoriesRepository)
+        public CategoryEditViewModel(ProductsManager ProdManager)
         {
-            _Categories = CategoriesRepository;
+            //_Categories = CategoriesRepository;
+            _ProdManager = ProdManager;
         }
     }   
 }

@@ -89,4 +89,10 @@ namespace CifrovikDEL
         public override IQueryable<Products> Items => base.Items.Include(item => item.Category);
         public ProductRepository(CifrovikDB db) : base(db) { }
     }
+
+    class PriceRepository : DBRepository<ProductPrice>
+    {
+        public override IQueryable<ProductPrice> Items => base.Items.Include(item => item.Product);
+        public PriceRepository(CifrovikDB db) : base(db) { }
+    }
 }
