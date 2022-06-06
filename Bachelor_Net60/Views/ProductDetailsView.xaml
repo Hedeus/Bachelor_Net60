@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Bachelor_Net60.Views"
              xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands" 
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:vm="clr-namespace:Bachelor_Net60.ViewModels"
              d:DataContext="{d:DesignInstance {x:Type vm:ProductDetailsViewModel}, IsDesignTimeCreatable=True}"
-             d:DesignHeight="200" d:DesignWidth="200">
+             d:DesignHeight="220" d:DesignWidth="200">
     <Grid MinWidth="200" HorizontalAlignment="Left">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -27,19 +28,32 @@
         </StackPanel>
         <DataGrid Grid.Row="2" MinHeight="100" Margin="5">
 
-        </DataGrid>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Grid.Row="3"
+        </DataGrid>        
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
                     HorizontalAlignment="Center"
-                    Margin="5"
+                    VerticalAlignment="Top">
+            <Button Margin="5" Padding="5"
                     IsDefault="True"
-                    Command="{Binding AddProductViewCommand}"
-                    Content="Редактировать"/>
-            <Button Grid.Row="3"
-                    HorizontalAlignment="Center"
-                    Margin="5"
-                    IsCancel="True"
-                    Content="Удалить">                
+                    CommandParameter="True"
+                    Command="{Binding AddProductViewCommand}">
+                <fa:ImageAwesome Icon="Solid_Plus"
+                                 Foreground="ForestGreen"
+                                 Height="13" Margin="5"/>
+            </Button>
+            <Button Margin="5" Padding="5"
+                    IsDefault="True"
+                    CommandParameter="False"
+                    Command="{Binding AddProductViewCommand}">
+                <fa:ImageAwesome Icon="Solid_Wrench"
+                                 Height="13" Margin="5"
+                                 Foreground="Blue"/>
+            </Button>
+            <Button Margin="5" Padding="5"
+                    IsDefault="True">
+                <fa:ImageAwesome Icon="Solid_Trash"
+                                 Height="13" Margin="5"
+                                 Foreground="Red"/>
             </Button>
         </StackPanel>
     </Grid>

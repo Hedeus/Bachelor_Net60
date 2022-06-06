@@ -32,11 +32,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <!--<TreeView Grid.Row="0"
-                              MinHeight="300"
-                              DataContext="{Binding FullTreeModel, Source={StaticResource Locator}}"
-                              ItemsSource="{Binding Items}">-->
+                    </Grid.RowDefinitions>                    
                     <TreeView Grid.Row="0"
                               MinHeight="300"                               
                               ItemsSource="{Binding Items}">
@@ -96,45 +92,13 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <ListView Grid.Row="0"  MinHeight="300"
+                              MinWidth="100"
                               SelectedIndex="0"
                               ItemsSource="{Binding SelCatProducts}"
-                              SelectedItem="{Binding SelectedProduct}"/>
-                    <StackPanel Grid.Row="1"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Margin="5">
-                        <Button Margin="3 10"
-                                Padding="0"
-                                Command="{Binding AddProductViewCommand}">
-                            <fa:ImageAwesome Icon="Solid_Plus"
-                                             Foreground="ForestGreen"
-                                             Height="13" Margin="5"/>
-                        </Button>
-                        <Button Margin="3 10"
-                                Padding="0">
-                            <fa:ImageAwesome Icon="Solid_Wrench"
-                                             Height="13" Margin="5"
-                                             Foreground="Blue"/>
-                        </Button>
-                        <Button Margin="20 10"
-                                Padding="0">
-                            <fa:ImageAwesome Icon="Solid_Trash"
-                                             Height="13" Margin="5"
-                                             Foreground="Red"/>
-                        </Button>
-                    </StackPanel>
+                              SelectedItem="{Binding SelectedProduct}"/>                    
                 </Grid>                
             </GroupBox>
             <GroupBox Grid.Column="2" Header="Редактирование">
-                <!--<GroupBox.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.MergedDictionaries>
-                            <ResourceDictionary Source="../../Resources/Templates/ModelManagerViews.xaml"/>
-                        </ResourceDictionary.MergedDictionaries>
-                    </ResourceDictionary>
-                </GroupBox.Resources>-->
-               
                 <ContentControl Content="{Binding CurrentModel}"/>
             </GroupBox>
 

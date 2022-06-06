@@ -100,27 +100,38 @@ namespace Bachelor_Net60.ViewModels
         }
         #endregion
 
+        #region OnProductsManagerPropertyChanged
+        private void OnProductsManagerPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentModel");
+            {
+                if (_ProductsManager.CurrentModel != null)
+                    this.CurrentModel = _ProductsManager.CurrentModel;
+            }
+        } 
+        #endregion
+
         /*----------------------------------------Команды---------------------------------------------*/
 
         #region AddCategoryViewCommand
         private ICommand _AddCategoryViewCommand;
         public ICommand AddCategoryViewCommand => _AddCategoryViewCommand
             ??= new LambdaCommand(OnAddCategoryViewCommandExecuted, CanAddCategoryViewCommandExecute);
-        private bool CanAddCategoryViewCommandExecute() => true;
-        private void OnAddCategoryViewCommandExecuted()
+        private bool CanAddCategoryViewCommandExecute(object p) => true;
+        private void OnAddCategoryViewCommandExecuted(object p)
         {
-            CurrentModel = new CategoryEditViewModel(_ProductsManager);
+            CurrentModel = new CategoryEditViewModel(_ProductsManager, (bool)p );
         }
-        #endregion
+        #endregion        
 
-        #region AddProductCommandViewCommand
+        #region AddProductViewCommand
         private Command _AddProductViewCommand;
         public Command AddProductViewCommand => _AddProductViewCommand
             ??= new LambdaCommand(OnAddProductViewCommandExecuted, CanAddProductViewCommandExecute);
-        private bool CanAddProductViewCommandExecute(object p) => SelectedCategory != null;
-        private void OnAddProductViewCommandExecuted(object p)
+        private bool CanAddProductViewCommandExecute() => SelectedCategory != null;
+        private void OnAddProductViewCommandExecuted()
         {
-            CurrentModel = new ProductEditViewModel(_ProductsManager, true);            
+            CurrentModel = new ProductEditViewModel(_ProductsManager, SelectedProduct != null);
         }
         #endregion
 
@@ -143,7 +154,7 @@ namespace Bachelor_Net60.ViewModels
         {
             _UserDialog = UserDialog;            
             _ProductsManager = productsManager;
-            productsManager.PropertyChanged += OnSelectedPropertyChanged;
+            productsManager.PropertyChanged += OnProductsManagerPropertyChanged;
 
             var ancestorIsNull = (from c in Cats
                                   join t in Tree on c.Id equals t.DescendantId into CategoryInTree
@@ -162,15 +173,6 @@ namespace Bachelor_Net60.ViewModels
                 }
                 Items.Add(new TreeViewModel(cat, children: chilCollection));
             }            
-        }
-
-        private void OnSelectedPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "CurrentModel");
-            {
-                if (_ProductsManager.CurrentModel != null)
-                    this.CurrentModel = _ProductsManager.CurrentModel;
-            }
-        }
+        }       
     }
 }

@@ -12,7 +12,8 @@ namespace Bachelor_Net60.ViewModels
     internal class ProductDetailsViewModel : ViewModel
     {
         /*--------------------------------------Свойства---------------------------------------------*/
-        private readonly ProductsManager _ProductsManager;        
+        private readonly ProductsManager _ProductsManager; 
+        
         private Categories _Category;
         public Categories Category
         {
@@ -27,19 +28,32 @@ namespace Bachelor_Net60.ViewModels
             set => Set(ref _Product, value);
         }
 
+        public bool IsAdd { get; set; }
+
         /*---------------------------------------Методы---------------------------------------------*/
 
+        #region OnProductsManagerPropertyChanged
+        private void OnProductsManagerPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SelectedCategory")
+                this.Category = ((ProductsManager)sender).SelectedCategory;
+            if (e.PropertyName == "SelectedProduct")
+                this.Product = ((ProductsManager)sender).SelectedProduct;
+        }
+        #endregion
 
         /*--------------------------------------Команды---------------------------------------------*/
 
-        #region AddProductCommandViewCommand
+        #region AddProductViewCommand - команда редактирования или добавления продукта в зависимости от параметра p (true - добавление)
         private Command _AddProductViewCommand;
         public Command AddProductViewCommand => _AddProductViewCommand
             ??= new LambdaCommand(OnAddProductViewCommandExecuted, CanAddProductViewCommandExecute);
-        private bool CanAddProductViewCommandExecute(object p) => _ProductsManager.SelectedCategory != null;
+        private bool CanAddProductViewCommandExecute(object p) =>
+            _ProductsManager.SelectedCategory != null &&
+            (_ProductsManager.SelectedProduct != null || (string)p == "True");
         private void OnAddProductViewCommandExecuted(object p)
         {
-            _ProductsManager.CurrentModel = new ProductEditViewModel(_ProductsManager, false);
+            _ProductsManager.CurrentModel = new ProductEditViewModel(_ProductsManager, (string)p == "True");
         }
         #endregion
 
@@ -48,15 +62,9 @@ namespace Bachelor_Net60.ViewModels
         {
             _ProductsManager = productsManager;
 
-            productsManager.PropertyChanged += OnProductsManagerChanged;            
+            productsManager.PropertyChanged += OnProductsManagerPropertyChanged;            
         }
 
-        private void OnProductsManagerChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "SelectedCategory")
-                this.Category = ((ProductsManager)sender).SelectedCategory;
-            if (e.PropertyName == "SelectedProduct")
-                this.Product = ((ProductsManager)sender).SelectedProduct;
-        }
+       
     }
 }

@@ -38,7 +38,8 @@
                     HorizontalAlignment="Center"
                     Margin="5"
                     IsCancel="True"
-                    Content="Отмена">
+                    Content="Отмена"
+                    Command="{Binding CancelEditCommand}">
             </Button>
         </StackPanel>       
     </Grid>    
