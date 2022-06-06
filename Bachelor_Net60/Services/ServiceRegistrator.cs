@@ -10,8 +10,8 @@ namespace Bachelor_Net60.Services
             //.AddTransient<IDataService, DataService>()
             .AddTransient<IUserDialog, UserDialog>()
             .AddSingleton<ProductsManager>()
-            //.AddSingleton<BindableSelectedItemBehavior2>()
-        ;
+            //.AddSingleton<SelectedProperties>()        
+            ;
     }
 }
 

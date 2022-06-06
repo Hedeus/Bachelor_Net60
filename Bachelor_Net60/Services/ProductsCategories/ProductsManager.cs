@@ -1,4 +1,5 @@
-﻿using Cifrovik.Interfaces;
+﻿using Bachelor_Net60.ViewModels.Base;
+using Cifrovik.Interfaces;
 using CifrovikDEL.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Net60.Services.ProductsCategories
 {
-    class ProductsManager
+    class ProductsManager : ViewModel
     {
         private readonly IRepository<Products> _Products;
         private readonly IRepository<Categories> _Categories;
@@ -20,10 +21,17 @@ namespace Bachelor_Net60.Services.ProductsCategories
         public IQueryable<ProductPrice> Prices => _ProductPrice.Items;
         public IQueryable<CategoryTree> Tree => _CatsTree.Items;
 
-        public Products SelectedProduct { get; set; }
-        public Categories SelectedCategory{ get; set; }
-        public IEnumerable<ProductPrice> SelectedProductPrice { get; set; }
-        //public CategoryTree SelectedCategoryTree { get; set;}
+        #region Общие свойства
+        private Categories _SelectedCategory;
+        public Categories SelectedCategory { get => _SelectedCategory; set => Set(ref _SelectedCategory, value); }
+
+        public Products _SelectedProduct;
+        public Products SelectedProduct { get => _SelectedProduct; set => Set(ref _SelectedProduct, value); }
+
+        private ViewModel _CurrentModel;
+        public ViewModel CurrentModel { get => _CurrentModel; set => Set(ref _CurrentModel, value); } 
+        #endregion
+
 
         public ProductsManager(IRepository<Categories> categories,
                                IRepository<Products> products,

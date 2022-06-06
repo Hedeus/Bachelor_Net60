@@ -8,6 +8,7 @@ using CifrovikDEL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,10 +18,9 @@ namespace Bachelor_Net60.ViewModels
 {
     internal class ProductsManagementViewModel : ViewModel
     {
-        private readonly IUserDialog _UserDialog;
-        //private readonly IRepository<Products> _ProductsRepository;
-        //private readonly IRepository<Categories> _CategoriesRepository;
-        private readonly ProductsManager _ProductsManager;
+        private readonly IUserDialog _UserDialog;        
+        private readonly ProductsManager _ProductsManager;       
+
         public ObservableCollection<TreeViewModel> Items { get; set; } = new ObservableCollection<TreeViewModel>();
         public IQueryable<Categories> Cats => _ProductsManager.Cats;
         public IEnumerable<Products> Prods => _ProductsManager.Prods;
@@ -31,8 +31,7 @@ namespace Bachelor_Net60.ViewModels
         private IEnumerable<Products> _SelCatProducts = null;
         public IEnumerable<Products> SelCatProducts
         {
-            get => _SelCatProducts;
-            //set => Set(ref _SelCatProducts, SelectedCategory == null ? null : Prods.Where(i => i.Category == SelectedCategory.Node));
+            get => _SelCatProducts;            
             set => Set(ref _SelCatProducts, value);
         }   
         #endregion
@@ -50,12 +49,11 @@ namespace Bachelor_Net60.ViewModels
         private TreeViewModel _SelectedCategory = null;
         public TreeViewModel SelectedCategory 
         {
-            get => _SelectedCategory;
-            //set => Set(ref _SelectedCategory, value);
+            get => _SelectedCategory;            
             set
             {
                 Set(ref _SelectedCategory, value);
-                SelCatProducts = SelectedCategory == null ? Prods : Prods.Where(i => i.Category == SelectedCategory.Node);
+                SelCatProducts = SelectedCategory == null ? Prods : Prods.Where(i => i.Category == SelectedCategory.Node);                
                 _ProductsManager.SelectedCategory = SelectedCategory == null ? null : (Categories)SelectedCategory.Node;
             }         
         }
@@ -69,8 +67,7 @@ namespace Bachelor_Net60.ViewModels
             set
             {
                 Set(ref _SelectedProduct, value);
-                _ProductsManager.SelectedProduct = value;
-                _ProductsManager.SelectedProductPrice = Prices.Where(i => i.ProductId == value.Id);
+                _ProductsManager.SelectedProduct = value;                
             }
         }
         #endregion
@@ -134,21 +131,19 @@ namespace Bachelor_Net60.ViewModels
         private bool CanShowProducDetailsCommandExecute() => true;
         private void OnShowProducDetailsCommandExecuted()
         {
-            CurrentModel = new ProductDetailsViewModel();
+            CurrentModel = new ProductDetailsViewModel(_ProductsManager);
         }
         #endregion
 
         /*--------------------------------------Конструктор---------------------------------------------*/
 
-        public ProductsManagementViewModel(IUserDialog UserDialog,
-                                           //IRepository<Products> ProductsRepository,
-                                           //IRepository<Categories> CategoriesRepo,
-                                           //IRepository
-                                           ProductsManager ProdManager
+        public ProductsManagementViewModel(IUserDialog UserDialog,                                           
+                                           ProductsManager productsManager
                                           )
         {
             _UserDialog = UserDialog;            
-            _ProductsManager = ProdManager;            
+            _ProductsManager = productsManager;
+            productsManager.PropertyChanged += OnSelectedPropertyChanged;
 
             var ancestorIsNull = (from c in Cats
                                   join t in Tree on c.Id equals t.DescendantId into CategoryInTree
@@ -167,6 +162,15 @@ namespace Bachelor_Net60.ViewModels
                 }
                 Items.Add(new TreeViewModel(cat, children: chilCollection));
             }            
+        }
+
+        private void OnSelectedPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentModel");
+            {
+                if (_ProductsManager.CurrentModel != null)
+                    this.CurrentModel = _ProductsManager.CurrentModel;
+            }
         }
     }
 }

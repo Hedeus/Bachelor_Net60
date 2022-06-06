@@ -5,11 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Bachelor_Net60.Views"
              xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands"
-             xmlns:vm="clr-namespace:Bachelor_Net60.ViewModels"
-             d:DesignHeight="200" d:DesignWidth="200">
-    <!--DataContext="{Binding ProductsEditModel, Source={StaticResource Locator}}-->
-    <!--DataContext="{Binding RelativeSource={RelativeSource Self}}">-->
-    
+             xmlns:vm="clr-namespace:Bachelor_Net60.ViewModels"  
+             d:DataContext="{d:DesignInstance {x:Type vm:ProductEditViewModel}, IsDesignTimeCreatable=True}"
+             d:DesignHeight="200" d:DesignWidth="200">    
     <Grid MinWidth="200" HorizontalAlignment="Left">                    
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -40,11 +38,7 @@
                     HorizontalAlignment="Center"
                     Margin="5"
                     IsCancel="True"
-                    Content="Отмена"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:ProductEditView}}">
-                <Button.Command>
-                    <cmd:CancelEditCommand DialogResult="False"/>
-                </Button.Command>
+                    Content="Отмена">
             </Button>
         </StackPanel>       
     </Grid>    

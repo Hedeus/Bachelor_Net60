@@ -14,12 +14,12 @@ namespace Bachelor_Net60.Views
         //#region ProductName : string - Название продукта
         //public static DependencyProperty ProductNameProperty =
         //    DependencyProperty.Register(
-        //        nameof(ProductName),
+        //        nameof(Product),
         //        typeof(string),
-        //        typeof(ProductsManagementWindow),
+        //        typeof(ProductEditView),
         //        new PropertyMetadata(default(string)));
         //[Description("Название продукта")]
-        //public string ProductName { get => (string)GetValue(ProductNameProperty); set => SetValue(ProductNameProperty, value); }
+        //public string Product { get => (string)GetValue(ProductNameProperty); set => SetValue(ProductNameProperty, value); }
         //#endregion
 
         //#region Category : Categories - Категория продукта
@@ -27,10 +27,10 @@ namespace Bachelor_Net60.Views
         //    DependencyProperty.Register(
         //        nameof(Category),
         //        typeof(Categories),
-        //        typeof(ProductsManagementWindow),
+        //        typeof(ProductEditView),
         //        new PropertyMetadata(null));
         //[Description("Категория продукта")]
-        //public Categories Category { get => (Categories)GetValue(CategoryProperty); set => SetValue(CategoryProperty, value); } 
+        //public Categories Category { get => (Categories)GetValue(CategoryProperty); set => SetValue(CategoryProperty, value); }
         //#endregion
         public ProductEditView()
         {

@@ -11,33 +11,33 @@ using System.Threading.Tasks;
 namespace Bachelor_Net60.ViewModels
 {
     internal class ProductEditViewModel : ViewModel
-    {        
+    {
         private readonly ProductsManager _ProductsManager;
 
-        private Categories _Category;
-        public Categories Category
+        private string _Category;
+        public string Category
         {
             get => _Category;
-            set => Set(ref _Category, _ProductsManager.SelectedCategory);
+            set => Set(ref _Category, value);
         }
 
-        private Products _Product;
-        public Products Product
+        private string _Product;
+        public string Product
         {
             get => _Product;
-            set => Set(ref _Product, _ProductsManager.SelectedProduct);
+            set => Set(ref _Product, value);
         }
-
-        //private IRepository<Products> _Products;
-
-        //public ProductEditViewModel(ProductsManager ProdManager, Categories SelectedCategory, bool IsAdd = false)
-        //{
-        //    //_Products = ProductRepository;
-        //    _ProdManager = ProdManager;
-        //}
-        public ProductEditViewModel(ProductsManager productsManager, bool IsAdd)
+        
+        public ProductEditViewModel(ProductsManager productsManager, bool IsAdd = false)        
         {
             _ProductsManager = productsManager;
+
+           _Category = _ProductsManager.SelectedCategory.Name;   
+
+            _Product = "Продукт не выбрана";
+            if (_ProductsManager.SelectedProduct != null)
+                _Product = _ProductsManager.SelectedProduct.Name;
+            
         }
     }
 }
