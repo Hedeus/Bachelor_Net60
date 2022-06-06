@@ -117,10 +117,11 @@ namespace Bachelor_Net60.ViewModels
         private ICommand _AddCategoryViewCommand;
         public ICommand AddCategoryViewCommand => _AddCategoryViewCommand
             ??= new LambdaCommand(OnAddCategoryViewCommandExecuted, CanAddCategoryViewCommandExecute);
-        private bool CanAddCategoryViewCommandExecute(object p) => true;
+        private bool CanAddCategoryViewCommandExecute(object p) =>
+            SelectedCategory != null || (string)p == "True";
         private void OnAddCategoryViewCommandExecuted(object p)
         {
-            CurrentModel = new CategoryEditViewModel(_ProductsManager, (bool)p );
+            CurrentModel = new CategoryEditViewModel(_ProductsManager, (string)p == "True");
         }
         #endregion        
 

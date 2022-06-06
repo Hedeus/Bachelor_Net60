@@ -9,8 +9,7 @@ namespace Bachelor_Net60.Services
         public static IServiceCollection AddServices(this IServiceCollection services) => services
             //.AddTransient<IDataService, DataService>()
             .AddTransient<IUserDialog, UserDialog>()
-            .AddSingleton<ProductsManager>()
-            //.AddSingleton<SelectedProperties>()        
+            .AddSingleton<ProductsManager>()                    
             ;
     }
 }

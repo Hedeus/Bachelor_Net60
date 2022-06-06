@@ -64,6 +64,7 @@
                                 Margin="5">
                         <Button Margin="3 10"
                                 Padding="0"
+                                CommandParameter="True"
                                 Command="{Binding AddCategoryViewCommand}">                            
                             <fa:ImageAwesome Icon="Solid_Plus"
                                              Foreground="ForestGreen"
@@ -71,7 +72,9 @@
                             
                         </Button>
                         <Button Margin="3 10"
-                                Padding="0">
+                                Padding="0"
+                                CommandParameter="False"
+                                Command="{Binding AddCategoryViewCommand}">
                             <fa:ImageAwesome Icon="Solid_Wrench"
                                              Height="13" Margin="5"
                                              Foreground="Blue"/>
