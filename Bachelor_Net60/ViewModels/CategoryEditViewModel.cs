@@ -62,10 +62,10 @@ namespace Bachelor_Net60.ViewModels
                 _ProductsManager.CategoriesAdd(newCategory);                
                 if (_ProductsManager.SelectedCategory != null)
                 {
-                    CategoryTree newTree = new CategoryTree();
-                    newTree.Ancestor = _ProductsManager.SelectedCategory;
-                    newTree.Descendant = newCategory;
-                    _ProductsManager.CategoryTreeAdd(newTree);
+                    //CategoryTree newTree = new CategoryTree();
+                    //newTree.Ancestor = _ProductsManager.SelectedCategory;
+                    //newTree.Descendant = newCategory;
+                    //_ProductsManager.CategoryTreeAdd(newTree);
                 } 
                 _ProductsManager.CurrentModel = new ProductDetailsViewModel(_ProductsManager);                
             }

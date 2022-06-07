@@ -66,11 +66,11 @@ namespace CifrovikDEL
 
         public void Remove(int id)
         {
-            //var item = Get(id);
-            //if (item is null) return;
-            //_db.Entry(item)/*.State = EntityState.Deleted*/;
+            var item = Get(id);
+            if (item is null) return;
+            _db.Entry(item).State = EntityState.Deleted;
 
-            _db.Remove(new T { Id = id });
+            //_db.Remove(new T { Id = id });
             if (AutosaveChanges)
                 _db.SaveChanges();
         }

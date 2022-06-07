@@ -16,10 +16,10 @@ namespace Bachelor_Net60.Services.ProductsCategories
         private readonly IRepository<ProductPrice> _ProductPrice;
         private readonly IRepository<CategoryTree> _CatsTree;
 
-        public IQueryable<Products> Prods => _Products.Items;
-        public IQueryable<Categories> Cats => _Categories.Items;
-        public IQueryable<ProductPrice> Prices => _ProductPrice.Items;
-        public IQueryable<CategoryTree> Tree => _CatsTree.Items;
+        public IEnumerable<Products> Prods => _Products.Items.ToList();
+        public IEnumerable<Categories> Cats => _Categories.Items.ToList();
+        public IEnumerable<ProductPrice> Prices => _ProductPrice.Items.ToList();
+        public IEnumerable<CategoryTree> Tree => _CatsTree.Items.ToList();
 
         #region Общие свойства
         private Categories _SelectedCategory;
@@ -70,7 +70,21 @@ namespace Bachelor_Net60.Services.ProductsCategories
         public async void ProductPriceAddAsync(ProductPrice productPrice) => await _ProductPrice.AddAsync(productPrice);
 
         public void CategoryTreeAdd(CategoryTree categorisTree) => _CatsTree.Add(categorisTree);
-        public async void CategoryTreeAddAsync(CategoryTree categorisTree) => await _CatsTree.AddAsync(categorisTree); 
+        public async void CategoryTreeAddAsync(CategoryTree categorisTree) => await _CatsTree.AddAsync(categorisTree);
+        #endregion
+
+        #region Add методы - добавление новых записей в базу
+        public void ProductsRemove(Products product) => _Products.Remove(product.Id);
+        public async void ProductsRemoveAsync(Products product) => await _Products.RemoveAsync(product.Id);
+
+        public void CategoriesRemove(int Id) => _Categories.Remove(Id);
+        public async void CategoriesRemoveAsync(int Id) => await _Categories.RemoveAsync(Id);
+
+        public void ProductPriceRemove(ProductPrice productPrice) => _ProductPrice.Remove(productPrice.Id);
+        public async void ProductPriceRemoveAsync(ProductPrice productPrice) => await _ProductPrice.RemoveAsync(productPrice.Id);
+
+        public void CategoryTreeRemove(CategoryTree categorisTree) => _CatsTree.Remove(categorisTree.Id);
+        public async void CategoryTreeRemoveAsync(CategoryTree categorisTree) => await _CatsTree.RemoveAsync(categorisTree.Id);
         #endregion
 
     }

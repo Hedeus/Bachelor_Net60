@@ -22,10 +22,10 @@ namespace Bachelor_Net60.ViewModels
         private readonly ProductsManager _ProductsManager;       
 
         public ObservableCollection<TreeViewModel> Items { get; set; } = new ObservableCollection<TreeViewModel>();
-        public IQueryable<Categories> Cats => _ProductsManager.Cats;
+        public IEnumerable<Categories> Cats => _ProductsManager.Cats;
         public IEnumerable<Products> Prods => _ProductsManager.Prods;
-        public IQueryable<ProductPrice> Prices => _ProductsManager.Prices;
-        public IQueryable<CategoryTree> Tree => _ProductsManager.Tree;
+        public IEnumerable<ProductPrice> Prices => _ProductsManager.Prices;
+        public IEnumerable<CategoryTree> Tree => _ProductsManager.Tree;
 
         #region SelCatProducts : IEnumerable<Products> - Продукты выбранной категории
         private IEnumerable<Products> _SelCatProducts = null;
@@ -53,14 +53,9 @@ namespace Bachelor_Net60.ViewModels
             set
             {
                 Set(ref _SelectedCategory, value);
-                SelCatProducts = SelectedCategory == null ? Prods : Prods.Where(i => i.Category == value.Node);
-                var temp = value.Node;
-                Categories tempCat = new Categories();
-                if (temp is Categories)
-                    tempCat = (Categories)temp;
-                else
-                    tempCat = (Categories)((TreeViewModel)temp).Node;
-                _ProductsManager.SelectedCategory = tempCat;
+                SelCatProducts = SelectedCategory == null ? Prods : Prods.Where(i => i.Category == value.Node);                
+                _ProductsManager.SelectedCategory = value is null ? null : (Categories) value.Node;
+                
             }         
         }
         #endregion
@@ -84,53 +79,61 @@ namespace Bachelor_Net60.ViewModels
         private string _Title = "Управление услугами";
 
         /// <summary>Заголовок окна</summary>
-        public string Title { get => _Title; set => Set(ref _Title, value); }        
+        public string Title { get => _Title; set => Set(ref _Title, value); }
 
         #endregion
 
         /*----------------------------------------Методы---------------------------------------------*/
 
         #region AddNode - метод для наполнения дерева при построении
+        //private void TreeViewRefresh()
+        //{
+        //    Items.Clear();
+        //    var localTree = (from t in Tree select t).ToList();
+        //    var localCats = (from c in Cats select c).ToList();
+
+
+        //    TreeViewModel ? AddNode(Categories Cat)
+        //    {
+        //        if (Cat is null) return null;
+        //        var childCollection = new ObservableCollection<TreeViewModel>();
+
+        //        foreach (var t in localTree.Where(i => i.Ancestor.Id == Cat.Id))
+        //        {
+        //            var child = localCats.FirstOrDefault(i => i.Id == t.DescendantId);
+        //            if (child != null)
+        //                childCollection.Add(new TreeViewModel(AddNode(child)));
+        //        }
+        //        var Item = new TreeViewModel(Cat, children: childCollection);
+        //        return Item;
+        //    }
+
+        //    var ancestorIsNull = (from c in Cats
+        //                          join t in Tree on c.Id equals t.Descendant.Id into CategoryInTree
+        //                          from subc in CategoryInTree.DefaultIfEmpty()
+        //                          where subc.Ancestor.Id == null
+        //                          select c).ToList();
+
+        //    foreach (var cat in ancestorIsNull)
+        //    {
+        //        var subTree = Tree.Where(i => i.AncestorId == cat.Id).ToList();
+        //        var childCollection = new ObservableCollection<TreeViewModel>();
+        //        foreach (var t in subTree)
+        //        {
+        //            var child = Cats.FirstOrDefault(i => i.Id == t.DescendantId);
+        //            if (child != null)
+        //                childCollection.Add(new TreeViewModel(AddNode(child)));
+        //        }
+        //        Items.Add(new TreeViewModel(cat, children: childCollection));
+        //    }
+        //}   
         private void TreeViewRefresh()
         {
-            //var localTree = (from t in Tree select t).ToList();
-            //var localCats = (from c in Cats select c).ToList();            
-
-            TreeViewModel ? AddNode(Categories Cat)
-            {
-                if (Cat is null) return null;
-                var childCollection = new ObservableCollection<TreeViewModel>();
-
-                foreach (var t in Tree.Where(i => i.Ancestor.Id == Cat.Id))
-                {
-                    var child = Cats.FirstOrDefault(i => i.Id == t.DescendantId);
-                    childCollection.Add(new TreeViewModel(AddNode(child)));
-                }
-                var Item = new TreeViewModel(Cat, children: childCollection);
-                return Item;
-            }
-
-            //Items.Remove();
-            Items.Clear();            
-
-            var ancestorIsNull = (from c in Cats
-                                  join t in Tree on c.Id equals t.Descendant.Id into CategoryInTree
-                                  from subc in CategoryInTree.DefaultIfEmpty()
-                                  where subc.Ancestor.Id == null
-                                  select c).ToList();
-
-            foreach (var cat in ancestorIsNull)
-            {
-                var subTree = Tree.Where(i => i.AncestorId == cat.Id).ToList();
-                var childCollection = new ObservableCollection<TreeViewModel>();
-                foreach (var t in subTree)
-                {
-                    var child = Cats.FirstOrDefault(i => i.Id == t.DescendantId);
-                    childCollection.Add(new TreeViewModel(AddNode(child)));
-                }
-                Items.Add(new TreeViewModel(cat, children: childCollection));
-            }
-        }   
+            Items.Clear();
+            //var localCats = (from c in Cats select c).ToList();
+            foreach (var cat in Cats)
+                Items.Add(new TreeViewModel(cat));
+        }
         #endregion
 
         #region OnProductsManagerPropertyChanged
@@ -188,10 +191,26 @@ namespace Bachelor_Net60.ViewModels
         private bool CanTreeRefreshCommandExecute() => true;
         private void OnTreeRefreshCommandExecuted()
         {
+            SelCatProducts = null;
+            SelectedCategory = null;
             TreeViewRefresh();
         }
 
         #endregion
+
+        private ICommand _RemoveCategoryCommand;
+        public ICommand RemoveCategoryCommand => _RemoveCategoryCommand
+            ??= new LambdaCommand(OnRemoveCategoryCommandExecuted, CanRemoveCategoryCommandExecute);
+        private bool CanRemoveCategoryCommandExecute() => SelectedCategory != null;
+        private void OnRemoveCategoryCommandExecuted()
+        {
+            var categoryToRemove = (Categories)SelectedCategory.Node;
+            if (!_UserDialog.Confirm($"Вы хотите удалить категорию {categoryToRemove.Name}?", "Удаление категории!"))
+                return;
+            _ProductsManager.CategoriesRemove(categoryToRemove.Id);
+            SelectedCategory = null;
+            TreeViewRefresh();
+        }
 
         /*--------------------------------------Конструктор---------------------------------------------*/
 
