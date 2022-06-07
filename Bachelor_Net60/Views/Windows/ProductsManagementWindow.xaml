@@ -3,15 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:fa="http://schemas.fontawesome.com/icons/svg"
         xmlns:local="clr-namespace:Bachelor_Net60.Views.Windows"
         xmlns:tree="clr-namespace:Bachelor_Net60.ViewModels"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:behaviors="clr-namespace:Bachelor_Net60.Services"
         DataContext="{Binding ProductsManagementModel, Source={StaticResource Locator}}"
-        Title="{Binding Title}" Height="450" Width="800">
+        Title="{Binding Title}" Height="450" Width="600">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding TreeRefreshCommand}"/>
             <i:InvokeCommandAction Command="{Binding ShowProducDetailsCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
@@ -28,13 +29,45 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <GroupBox Grid.Column="0" Header="Категории">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>                    
-                    <TreeView Grid.Row="0"
-                              MinHeight="300"                               
+                <DockPanel>
+                    <Button DockPanel.Dock="Top"
+                            Background="WhiteSmoke"                            
+                            Command="{Binding TreeRefreshCommand}">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <fa:ImageAwesome Icon="Solid_ArrowsRotate"
+                                             PrimaryColor="ForestGreen"
+                                             Height="13" Margin="0 3 5 3"/>
+                            <TextBlock Text="Обновить категории"/>
+                        </StackPanel>                        
+                    </Button>
+                    <UniformGrid DockPanel.Dock="Bottom"
+                                 Rows="1"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Top">
+                        <Button Margin="3"                                
+                                CommandParameter="True"
+                                Command="{Binding AddCategoryViewCommand}">
+                            <fa:ImageAwesome Icon="Solid_Plus"
+                                             PrimaryColor="ForestGreen"                                             
+                                             Height="13" Margin="5"/>
+
+                        </Button>
+                        <Button Margin="3"                                
+                                CommandParameter="False"
+                                Command="{Binding AddCategoryViewCommand}">
+                            <fa:ImageAwesome Icon="Solid_Wrench"
+                                             Height="13" Margin="5"
+                                             PrimaryColor="Blue"/>
+                        </Button>
+                        <Button Margin="20 3 0 3">
+                            <fa:ImageAwesome Icon="Solid_Trash"
+                                             Height="13" Margin="5"
+                                             PrimaryColor="Red"/>
+                        </Button>
+                    </UniformGrid>
+
+                    <TreeView MinHeight="300"                               
                               ItemsSource="{Binding Items}">
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="{x:Type TreeViewItem}">
@@ -57,36 +90,8 @@
                             <behaviors:BindableSelectedItemBehavior2 SelectedItem="{Binding SelectedCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </i:Interaction.Behaviors>
                     </TreeView>
-                    <StackPanel Grid.Row="1"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Margin="5">
-                        <Button Margin="3 10"
-                                Padding="0"
-                                CommandParameter="True"
-                                Command="{Binding AddCategoryViewCommand}">                            
-                            <fa:ImageAwesome Icon="Solid_Plus"
-                                             Foreground="ForestGreen"
-                                             Height="13" Margin="5"/>
-                            
-                        </Button>
-                        <Button Margin="3 10"
-                                Padding="0"
-                                CommandParameter="False"
-                                Command="{Binding AddCategoryViewCommand}">
-                            <fa:ImageAwesome Icon="Solid_Wrench"
-                                             Height="13" Margin="5"
-                                             Foreground="Blue"/>
-                        </Button>                        
-                        <Button Margin="20 10"
-                                Padding="0">
-                            <fa:ImageAwesome Icon="Solid_Trash"
-                                             Height="13" Margin="5"
-                                             Foreground="Red"/>
-                        </Button>                        
-                    </StackPanel>                    
-                </Grid>                
+                    
+                </DockPanel>                
             </GroupBox>
             <GroupBox Grid.Column="1" Header="Услуги">
                 <Grid>

@@ -38,7 +38,7 @@ namespace Bachelor_Net60.ViewModels
         private Command _CancelEditCommand;
         public Command CancelEditCommand => _CancelEditCommand
             ??= new LambdaCommand(OnCancelEditCommandExecuted, CanCancelEditCommandExecute);
-        private bool CanCancelEditCommandExecute() => _ProductsManager.SelectedCategory != null;
+        private bool CanCancelEditCommandExecute() => true;
         private void OnCancelEditCommandExecuted()
         {
             _ProductsManager.CurrentModel = new ProductDetailsViewModel(_ProductsManager);

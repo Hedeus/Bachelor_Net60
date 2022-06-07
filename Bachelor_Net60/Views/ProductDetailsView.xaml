@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Bachelor_Net60.Views"
              xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands" 
-             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              xmlns:vm="clr-namespace:Bachelor_Net60.ViewModels"
              d:DataContext="{d:DesignInstance {x:Type vm:ProductDetailsViewModel}, IsDesignTimeCreatable=True}"
              d:DesignHeight="220" d:DesignWidth="200">
@@ -29,7 +29,7 @@
         <DataGrid Grid.Row="2" MinHeight="100" Margin="5">
 
         </DataGrid>        
-        <StackPanel Grid.Row="3"
+        <!--<StackPanel Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top">
@@ -54,7 +54,31 @@
                 <fa:ImageAwesome Icon="Solid_Trash"
                                  Height="13" Margin="5"
                                  Foreground="Red"/>
-            </Button>
-        </StackPanel>
+            </Button>-->
+            <UniformGrid Grid.Row="3"
+                                 Rows="1"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Top">
+                <Button Margin="3"                                
+                                CommandParameter="True"
+                                Command="{Binding AddProductViewCommand}">
+                    <fa:ImageAwesome Icon="Solid_Plus"
+                                             PrimaryColor="ForestGreen"                                             
+                                             Height="13" Margin="5"/>
+
+                </Button>
+                <Button Margin="3"                                
+                                CommandParameter="False"
+                                Command="{Binding AddProductViewCommand}">
+                    <fa:ImageAwesome Icon="Solid_Wrench"
+                                             Height="13" Margin="5"
+                                             PrimaryColor="Blue"/>
+                </Button>
+                <Button Margin="20 3 0 3">
+                    <fa:ImageAwesome Icon="Solid_Trash"
+                                             Height="13" Margin="5"
+                                             PrimaryColor="Red"/>
+                </Button>
+            </UniformGrid>        
     </Grid>
 </UserControl>
