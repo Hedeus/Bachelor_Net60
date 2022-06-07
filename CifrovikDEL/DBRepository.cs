@@ -16,7 +16,7 @@ namespace CifrovikDEL
         private readonly CifrovikDB _db;
         private readonly DbSet<T> _Set;
 
-        public bool AutosaveChanges { get; set; }
+        public bool AutosaveChanges { get; set; } = true;
         public DBRepository(CifrovikDB db)
         {
             _db = db;

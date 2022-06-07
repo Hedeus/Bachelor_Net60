@@ -26,6 +26,7 @@ namespace Bachelor_Net60.ViewModels
             set => Set(ref _Category, value);
         }
         public bool IsAdd { get; set; }
+        private string OldName;
 
         /*----------------------------------------Методы---------------------------------------------*/
 
@@ -44,12 +45,49 @@ namespace Bachelor_Net60.ViewModels
         }
         #endregion
 
+        #region AddCategoryCommand
+        private Command _AddCategoryCommand;
+        public Command AddCategoryCommand => _AddCategoryCommand
+            ??= new LambdaCommand(OnAddCategoryCommandExecuted, CanAddCategoryCommandExecute);
+        private bool CanAddCategoryCommandExecute() => true;
+        private void OnAddCategoryCommandExecuted()
+        {
+            if (IsAdd)
+            {
+                Categories newCategory = new Categories()
+                {
+                    Name = Category
+                };
+                //await _ProductsManager.CategoriesAddAsync(newCategory).ConfigureAwait(false);                
+                _ProductsManager.CategoriesAdd(newCategory);                
+                if (_ProductsManager.SelectedCategory != null)
+                {
+                    CategoryTree newTree = new CategoryTree();
+                    newTree.Ancestor = _ProductsManager.SelectedCategory;
+                    newTree.Descendant = newCategory;
+                    _ProductsManager.CategoryTreeAdd(newTree);
+                } 
+                _ProductsManager.CurrentModel = new ProductDetailsViewModel(_ProductsManager);                
+            }
+            else
+            {
+                _ProductsManager.CurrentModel = new ProductDetailsViewModel(_ProductsManager);
+            }              
+        }
+        #endregion
+
         /*--------------------------------------Конструктор---------------------------------------------*/
         public CategoryEditViewModel(ProductsManager productsManager, bool isAdd = false)
         {
             _ProductsManager = productsManager;
             IsAdd = isAdd;
-            Category = _ProductsManager.SelectedCategory.Name;
+            if (isAdd)
+                Category = "Введите название";
+            else
+            {
+                Category = _ProductsManager.SelectedCategory.Name;
+                OldName = Category;
+            }
         }
     }   
 }

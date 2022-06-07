@@ -29,32 +29,49 @@ namespace Bachelor_Net60.Services.ProductsCategories
         public Products SelectedProduct { get => _SelectedProduct; set => Set(ref _SelectedProduct, value); }
 
         private ViewModel _CurrentModel;
-        public ViewModel CurrentModel { get => _CurrentModel; set => Set(ref _CurrentModel, value); } 
+        public ViewModel CurrentModel { get => _CurrentModel; set => Set(ref _CurrentModel, value); }
         #endregion
 
 
         public ProductsManager(IRepository<Categories> categories,
                                IRepository<Products> products,
                                IRepository<ProductPrice> productPrice,
-                               IRepository<CategoryTree> CatsTree)
+                               IRepository<CategoryTree> catsTree)
         {
             _Products = products;
             _Categories = categories;
             _ProductPrice = productPrice;
-            _CatsTree = CatsTree;
+            _CatsTree = catsTree;            
         }
 
-        public  void ProductsUpdate(Products Product) =>  _Products.Update(Product);
-        public async void ProductsUpdateAsync(Products Product) => await _Products.UpdateAsync(Product);
+        /*------------------------------------------------Методы-----------------------------------------------*/
+        #region Update методы - Обновление существующих в базе записей
+        public void ProductsUpdate(Products product) => _Products.Update(product);
+        public async void ProductsUpdateAsync(Products product) => await _Products.UpdateAsync(product);
 
-        public void CategoriesUpdate(Categories Category) => _Categories.Update(Category);
-        public async void CategoriesUpdateAsync(Categories Category) => await _Categories.UpdateAsync(Category);
+        public void CategoriesUpdate(Categories category) => _Categories.Update(category);
+        public async void CategoriesUpdateAsync(Categories category) => await _Categories.UpdateAsync(category);
 
         public void ProductPriceUpdate(ProductPrice productPrice) => _ProductPrice.Update(productPrice);
         public async void ProductPriceUpdateAsync(ProductPrice productPrice) => await _ProductPrice.UpdateAsync(productPrice);
 
         public void CategoryTreeUpdate(CategoryTree categorisTree) => _CatsTree.Update(categorisTree);
         public async void CategoryTreeUpdateAsync(CategoryTree categorisTree) => await _CatsTree.UpdateAsync(categorisTree);
+        #endregion
+
+        #region Add методы - добавление новых записей в базу
+        public void ProductsAdd(Products product) => _Products.Add(product);
+        public async void ProductsAddAsync(Products product) => await _Products.AddAsync(product);        
+
+        public void CategoriesAdd(Categories category) => _Categories.Add(category);
+        public async void CategoriesAddAsync(Categories category) => await _Categories.AddAsync(category);
+
+        public void ProductPriceAdd(ProductPrice productPrice) => _ProductPrice.Add(productPrice);
+        public async void ProductPriceAddAsync(ProductPrice productPrice) => await _ProductPrice.AddAsync(productPrice);
+
+        public void CategoryTreeAdd(CategoryTree categorisTree) => _CatsTree.Add(categorisTree);
+        public async void CategoryTreeAddAsync(CategoryTree categorisTree) => await _CatsTree.AddAsync(categorisTree); 
+        #endregion
 
     }
 }

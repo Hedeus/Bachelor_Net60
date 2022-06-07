@@ -14,15 +14,16 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <TextBlock Text="Новая категория" Margin="5"/>
-            <TextBox Text="{Binding Category}"
+            <TextBlock Text="Имя категории" Margin="5"/>
+            <TextBox Text="{Binding Category}"                     
                      Margin="5" Width="100"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Grid.Row="2"
                     HorizontalAlignment="Center"
                     Margin="5"
-                    Content="Сохранить"/>
+                    Content="Сохранить"
+                    Command="{Binding AddCategoryCommand}"/>
             <Button Grid.Row="3"
                     HorizontalAlignment="Center"
                     Margin="5"
