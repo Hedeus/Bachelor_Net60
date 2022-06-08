@@ -16,13 +16,14 @@ namespace CifrovikDEL
         private readonly CifrovikDB _db;
         private readonly DbSet<T> _Set;
 
-        public bool AutosaveChanges { get; set; } = true;
+        public bool AutosaveChanges { get; set; }
+
         public DBRepository(CifrovikDB db)
         {
             _db = db;
             _Set = db.Set<T>();
         }
-        public virtual IQueryable<T> Items => _Set;
+        public virtual IQueryable<T> Items => _Set;       
 
         public T Get(int id) => Items.SingleOrDefault(item => item.Id == id);
 
@@ -82,6 +83,21 @@ namespace CifrovikDEL
                 await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
         }
 
+        public void AutosaveOnOff(bool autosave)
+        {
+            AutosaveChanges = autosave;
+        }
+
+        public void Save()
+        {
+            if (!AutosaveChanges)
+                _db.SaveChanges();
+        }
+        public async Task SaveAsync(CancellationToken Cancel = default)
+        {
+            if (!AutosaveChanges)
+                await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+        }
     }
 
     class ProductRepository : DBRepository<Products>

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands"
         xmlns:local="clr-namespace:Bachelor_Net60"
+        xmlns:fa="http://schemas.fontawesome.com/icons/svg"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
         Title="{Binding Title}" Height="450" Width="800">
     <DockPanel>
@@ -30,11 +31,29 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="Auto" MinWidth="300"/>
                 <ColumnDefinition/>
-            </Grid.ColumnDefinitions>            
-            <GroupBox Grid.Column="0" Header="Услуги">
-                <TreeView/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Header="Категорії">
+                <DockPanel>
+                    <Button DockPanel.Dock="Top"
+                            Background="WhiteSmoke"                            
+                            Command="{Binding TreeRefreshCommand}">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <fa:ImageAwesome Icon="Solid_ArrowsRotate"
+                                             PrimaryColor="ForestGreen"
+                                             Height="13" Margin="0 3 5 3"/>
+                            <TextBlock Text="Обновить категории"/>
+                        </StackPanel>
+                    </Button>
+                    <ListView>
+                        
+                    </ListView>                
+            </DockPanel>
             </GroupBox>
-            <GroupBox Grid.Column="1" Header="Заказ">
+            <GroupBox Grid.Column="1" Header="Послуги">
+                
+            </GroupBox>
+            <GroupBox Grid.Column="2" Header="Заказ">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="200"/>

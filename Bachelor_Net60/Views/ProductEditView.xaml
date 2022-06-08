@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Bachelor_Net60.Views"
              xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands"
              xmlns:vm="clr-namespace:Bachelor_Net60.ViewModels"  
+             xmlns:fa="http://schemas.fontawesome.com/icons/fonts"
              d:DataContext="{d:DesignInstance {x:Type vm:ProductEditViewModel}, IsDesignTimeCreatable=True}"
              d:DesignHeight="200" d:DesignWidth="200">    
     <Grid MinWidth="200" HorizontalAlignment="Left">                    
@@ -25,21 +26,36 @@
             <TextBlock Text="Название" Margin="5"/>
             <TextBox Text="{Binding Product}" Margin="5" Width="100"/>
         </StackPanel>
-        <DataGrid Grid.Row="2" MinHeight="100" Margin="5">
-            
+        <DataGrid ItemsSource="{Binding Prices}"
+                  Grid.Row="2" MinHeight="100" Margin="5"
+                  AutoGenerateColumns="False"
+                  GridLinesVisibility="Vertical"
+                  VerticalGridLinesBrush="DarkGray"
+                  
+                  AlternatingRowBackground="LightGray">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="От (шт.)" Binding="{Binding Amount}" Width="Auto"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat='0.00'}" Width="Auto"/>
+            </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Grid.Row="3"
-                    HorizontalAlignment="Center"
-                    Margin="5"
+        <StackPanel Grid.Row="3" Orientation="Horizontal"
+                     HorizontalAlignment="Center">
+            <Button Margin="5 3" Padding="3"
                     IsDefault="True"
-                    Content="Сохранить"/>
-            <Button Grid.Row="3"
-                    HorizontalAlignment="Center"
-                    Margin="5"
+                    Content="Сохранить"
+                    Command="{Binding SaveChangesCommand}"/>
+            <Button Margin="5 3" Padding="3"
                     IsCancel="True"
                     Content="Отмена"
                     Command="{Binding CancelEditCommand}">
+            </Button>
+            <Button Margin="15 3 3 3"
+                    Padding="6 3"
+                    IsDefault="True"
+                    Command="{Binding AddRowCommand}">
+                <fa:ImageAwesome Icon="Solid_Plus"
+                                 PrimaryColor="ForestGreen"
+                                 Height="13"/>
             </Button>
         </StackPanel>       
     </Grid>    

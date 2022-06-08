@@ -11,6 +11,7 @@ namespace Cifrovik.Interfaces
 
     public interface IRepository<T> where T : class, IEntity, new()
     {
+        bool AutosaveChanges { get; set; }
         IQueryable<T> Items { get; }
         T Get(int id);
         Task<T> GetAsync(int id, CancellationToken Cancel = default);
@@ -20,5 +21,8 @@ namespace Cifrovik.Interfaces
         Task UpdateAsync(T item, CancellationToken Cancel = default);
         void Remove(int id);
         Task RemoveAsync(int id, CancellationToken Cancel = default);
+        void AutosaveOnOff(bool autosave);
+        void Save();
+        Task SaveAsync(CancellationToken Cancel = default);
     }
 }

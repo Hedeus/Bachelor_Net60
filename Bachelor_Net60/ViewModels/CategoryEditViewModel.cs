@@ -1,6 +1,6 @@
 ﻿using Bachelor_Net60.Infrastructure.Commands;
 using Bachelor_Net60.Infrastructure.Commands.Base;
-using Bachelor_Net60.Services.ProductsCategories;
+using Bachelor_Net60.Services.Management;
 using Bachelor_Net60.ViewModels.Base;
 using Cifrovik.Interfaces;
 using CifrovikDEL.Entities;

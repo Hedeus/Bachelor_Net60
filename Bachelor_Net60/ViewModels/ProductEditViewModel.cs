@@ -1,14 +1,10 @@
 ﻿using Bachelor_Net60.Infrastructure.Commands;
 using Bachelor_Net60.Infrastructure.Commands.Base;
-using Bachelor_Net60.Services.ProductsCategories;
+using Bachelor_Net60.Services.Management;
 using Bachelor_Net60.ViewModels.Base;
-using Cifrovik.Interfaces;
 using CifrovikDEL.Entities;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bachelor_Net60.ViewModels
 {
@@ -17,19 +13,35 @@ namespace Bachelor_Net60.ViewModels
         /*---------------------------------------Свойства---------------------------------------------*/
         private readonly ProductsManager _ProductsManager;
 
+        #region Category : string - назва обраної категорії
         private string _Category;
         public string Category
         {
             get => _Category;
             set => Set(ref _Category, value);
         }
+        #endregion
 
+        #region Product : string - Назва обраного продукту
         private string _Product;
         public string Product
         {
             get => _Product;
             set => Set(ref _Product, value);
         }
+        #endregion
+
+        #region Prices: Таблиця цін в залежності від кількості для обраного продукту
+        private ObservableCollection<ProductPrice> _Prices = new ObservableCollection<ProductPrice>();
+        public ObservableCollection<ProductPrice> Prices
+        {
+            get => _Prices;
+            set => Set(ref _Prices, value);
+        }
+        #endregion
+
+        private bool IsAdd;
+        private Products SelectedProduct = new Products();
 
         /*-----------------------------------------Методы---------------------------------------------*/
 
@@ -40,24 +52,73 @@ namespace Bachelor_Net60.ViewModels
         private Command _CancelEditCommand;
         public Command CancelEditCommand => _CancelEditCommand
             ??= new LambdaCommand(OnCancelEditCommandExecuted, CanCancelEditCommandExecute);
-        private bool CanCancelEditCommandExecute() => _ProductsManager.SelectedCategory != null;
+        private bool CanCancelEditCommandExecute() => true;
         private void OnCancelEditCommandExecuted()
         {
             _ProductsManager.CurrentModel = new ProductDetailsViewModel(_ProductsManager);
         }
         #endregion
 
+        #region AddRowCommand
+        private Command _AddRowCommand;
+        public Command AddRowCommand => _AddRowCommand
+            ??= new LambdaCommand(OnAddRowCommandExecuted, CanAddRowCommandExecute);
+        private bool CanAddRowCommandExecute() => _ProductsManager.SelectedCategory != null;
+        private void OnAddRowCommandExecuted()
+        {
+            Products newProduct = SelectedProduct != null ? SelectedProduct : new Products();
+            SelectedProduct ??= newProduct;
+            ProductPrice newprice = new ProductPrice()
+            {
+                //ProductId = newProduct.Id,
+                Amount = 0,
+                Price = 0.0M
+            };
+            Prices.Add(newprice);
+        }
+        #endregion
+
+        #region SaveChangesCommand
+        private Command _SaveChangesCommand;
+        public Command SaveChangesCommand => _SaveChangesCommand
+            ??= new LambdaCommand(OnSaveChangesCommandExecuted, CanSaveChangesCommandExecute);
+        private bool CanSaveChangesCommandExecute() => true;
+        private void OnSaveChangesCommandExecuted()
+        {
+            if (IsAdd)
+            {
+                SelectedProduct ??= new Products();
+                SelectedProduct.CategoryId = _ProductsManager.SelectedCategory.Id;
+                SelectedProduct.Name = Product;
+                var newProduct = _ProductsManager.ProductsAdd(SelectedProduct);
+                foreach (var price in Prices)
+                    price.ProductId = newProduct.Id;
+                _ProductsManager.ProductPriceAdd(Prices);
+            }
+            else
+            {
+                _ProductsManager.ProductsUpdate(SelectedProduct);
+                _ProductsManager.ProductPriceUpdate(Prices);
+            }
+            _ProductsManager.CurrentModel = new ProductDetailsViewModel(_ProductsManager);
+        }
+        #endregion
+
         /*--------------------------------------Конструктор---------------------------------------------*/
-        public ProductEditViewModel(ProductsManager productsManager, bool IsAdd = false)        
+        public ProductEditViewModel(ProductsManager productsManager, bool isAdd = false)        
         {
             _ProductsManager = productsManager;
-
-           _Category = _ProductsManager.SelectedCategory.Name;   
-
+            _Category = _ProductsManager.SelectedCategory.Name;
+            IsAdd = isAdd;
+            if (!isAdd)
+                SelectedProduct = _ProductsManager.SelectedProduct;
             _Product = "Продукт не выбрана";
-            if (_ProductsManager.SelectedProduct != null)
-                _Product = _ProductsManager.SelectedProduct.Name;
-            
+            if (SelectedProduct != null)
+            {
+                Product = SelectedProduct.Name;
+                foreach (var price in _ProductsManager.Prices.Where(price => price.ProductId == SelectedProduct.Id))
+                    Prices.Add(price);  
+            }            
         }
     }
 }

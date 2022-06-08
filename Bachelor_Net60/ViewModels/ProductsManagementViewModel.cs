@@ -1,7 +1,7 @@
 ﻿using Bachelor_Net60.Infrastructure.Commands;
 using Bachelor_Net60.Infrastructure.Commands.Base;
 using Bachelor_Net60.Services.Interfaces;
-using Bachelor_Net60.Services.ProductsCategories;
+using Bachelor_Net60.Services.Management;
 using Bachelor_Net60.ViewModels.Base;
 using Cifrovik.Interfaces;
 using CifrovikDEL.Entities;
@@ -183,7 +183,7 @@ namespace Bachelor_Net60.ViewModels
         }
         #endregion
 
-        #region Обновление дерева
+        #region TreeRefreshCommand - Обновление дерева
 
         private ICommand _TreeRefreshCommand;
         public ICommand TreeRefreshCommand => _TreeRefreshCommand
@@ -198,6 +198,7 @@ namespace Bachelor_Net60.ViewModels
 
         #endregion
 
+        #region RemoveCategoryCommand - Видалення категорії
         private ICommand _RemoveCategoryCommand;
         public ICommand RemoveCategoryCommand => _RemoveCategoryCommand
             ??= new LambdaCommand(OnRemoveCategoryCommandExecuted, CanRemoveCategoryCommandExecute);
@@ -210,7 +211,8 @@ namespace Bachelor_Net60.ViewModels
             _ProductsManager.CategoriesRemove(categoryToRemove.Id);
             SelectedCategory = null;
             TreeViewRefresh();
-        }
+        } 
+        #endregion
 
         /*--------------------------------------Конструктор---------------------------------------------*/
 

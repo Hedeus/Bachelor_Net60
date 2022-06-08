@@ -26,16 +26,17 @@
             <TextBlock Text="Название" Margin="5"/>
             <TextBox Text="{Binding Product.Name}" Margin="5" Width="100"/>
         </StackPanel>
-        <DataGrid Grid.Row="2" MinHeight="100" Margin="5"
+        <DataGrid ItemsSource="{Binding Prices}"
+                  Grid.Row="2" MinHeight="100" Margin="5"
                   AutoGenerateColumns="False"
                   GridLinesVisibility="Vertical"
                   VerticalGridLinesBrush="DarkGray"
+                  IsReadOnly="True"
                   AlternatingRowBackground="LightGray">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="От (шт.)" Binding="{Binding}" Width="Auto"/>
-                <DataGridTextColumn Header="Цена" Binding="{Binding}" Width="Auto"/>
+                <DataGridTextColumn Header="От (шт.)" Binding="{Binding Amount}" Width="Auto"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat='0.00'}" Width="Auto"/>
             </DataGrid.Columns>
-
         </DataGrid> 
             <UniformGrid Grid.Row="3"
                                  Rows="1"
@@ -45,8 +46,8 @@
                                 CommandParameter="True"
                                 Command="{Binding AddProductViewCommand}">
                     <fa:ImageAwesome Icon="Solid_Plus"
-                                             PrimaryColor="ForestGreen"                                             
-                                             Height="13" Margin="5"/>
+                                     PrimaryColor="ForestGreen"                                             
+                                     Height="13" Margin="5"/>
 
                 </Button>
                 <Button Margin="3"                                
