@@ -157,7 +157,7 @@ namespace Bachelor_Net60.ViewModels
             SelectedCategory != null || (string)p == "True";
         private void OnAddCategoryViewCommandExecuted(object p)
         {
-            CurrentModel = new CategoryEditViewModel(_ProductsManager, (string)p == "True");
+            CurrentModel = new CategoryEditViewModel(_UserDialog, _ProductsManager, (string)p == "True");
         }
         #endregion        
 
@@ -168,7 +168,7 @@ namespace Bachelor_Net60.ViewModels
         private bool CanAddProductViewCommandExecute() => SelectedCategory != null;
         private void OnAddProductViewCommandExecuted()
         {
-            CurrentModel = new ProductEditViewModel(_ProductsManager, SelectedProduct != null);
+            CurrentModel = new ProductEditViewModel(_UserDialog, _ProductsManager, SelectedProduct != null);
         }
         #endregion
 
@@ -179,7 +179,7 @@ namespace Bachelor_Net60.ViewModels
         private bool CanShowProducDetailsCommandExecute() => true;
         private void OnShowProducDetailsCommandExecuted()
         {
-            CurrentModel = new ProductDetailsViewModel(_ProductsManager);
+            CurrentModel = new ProductDetailsViewModel(_UserDialog, _ProductsManager);
         }
         #endregion
 

@@ -57,10 +57,11 @@
                                              Height="13" Margin="5"
                                              PrimaryColor="Blue"/>
                 </Button>
-                <Button Margin="20 3 0 3">
+                <Button Margin="20 3 0 3"
+                        Command="{Binding RemoveProductCommand}">
                     <fa:ImageAwesome Icon="Solid_Trash"
-                                             Height="13" Margin="5"
-                                             PrimaryColor="Red"/>
+                                     Height="13" Margin="5"
+                                     PrimaryColor="Red"/>
                 </Button>
             </UniformGrid>        
     </Grid>

@@ -1,5 +1,6 @@
 ﻿using Bachelor_Net60.Infrastructure.Commands;
 using Bachelor_Net60.Infrastructure.Commands.Base;
+using Bachelor_Net60.Services.Interfaces;
 using Bachelor_Net60.Services.Management;
 using Bachelor_Net60.ViewModels.Base;
 using CifrovikDEL.Entities;
@@ -10,6 +11,8 @@ namespace Bachelor_Net60.ViewModels
 {
     internal class ProductEditViewModel : ViewModel
     {
+        private readonly IUserDialog _UserDialog;
+
         /*---------------------------------------Свойства---------------------------------------------*/
         private readonly ProductsManager _ProductsManager;
 
@@ -55,7 +58,7 @@ namespace Bachelor_Net60.ViewModels
         private bool CanCancelEditCommandExecute() => true;
         private void OnCancelEditCommandExecuted()
         {
-            _ProductsManager.CurrentModel = new ProductDetailsViewModel(_ProductsManager);
+            _ProductsManager.CurrentModel = new ProductDetailsViewModel(_UserDialog, _ProductsManager);
         }
         #endregion
 
@@ -98,15 +101,18 @@ namespace Bachelor_Net60.ViewModels
             else
             {
                 _ProductsManager.ProductsUpdate(SelectedProduct);
+                foreach (var price in Prices)
+                    price.ProductId = SelectedProduct.Id;
                 _ProductsManager.ProductPriceUpdate(Prices);
             }
-            _ProductsManager.CurrentModel = new ProductDetailsViewModel(_ProductsManager);
+            _ProductsManager.CurrentModel = new ProductDetailsViewModel(_UserDialog, _ProductsManager);
         }
         #endregion
 
         /*--------------------------------------Конструктор---------------------------------------------*/
-        public ProductEditViewModel(ProductsManager productsManager, bool isAdd = false)        
+        public ProductEditViewModel(IUserDialog userDialog, ProductsManager productsManager, bool isAdd = false)        
         {
+            _UserDialog = userDialog;
             _ProductsManager = productsManager;
             _Category = _ProductsManager.SelectedCategory.Name;
             IsAdd = isAdd;

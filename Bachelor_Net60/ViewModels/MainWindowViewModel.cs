@@ -123,7 +123,8 @@ namespace Bachelor_Net60.ViewModels
         private bool CanAddToOrderCommandExecute() => true;
         private void OnAddToOrderCommandExecuted()
         {
-            Title =  $"Doubleclick по {SelectedProduct} Работает";
+            Title =  $"Doubleclick по {SelectedProduct}";
+
         }
         #endregion
 
