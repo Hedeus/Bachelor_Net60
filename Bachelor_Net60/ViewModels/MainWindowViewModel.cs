@@ -1,13 +1,16 @@
-﻿using Bachelor_Net60.Services.Interfaces;
+﻿using Bachelor_Net60.Infrastructure.Commands;
+using Bachelor_Net60.Services.Interfaces;
 using Bachelor_Net60.Services.Management;
 using Bachelor_Net60.ViewModels.Base;
 using Cifrovik.Interfaces;
 using CifrovikDEL.Entities;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Bachelor_Net60.ViewModels
 {
@@ -39,12 +42,43 @@ namespace Bachelor_Net60.ViewModels
 
         #endregion
 
-        #region Categories : ObservableCollection<Categories> - Список категорий
-        private ObservableCollection<Categories> _Categories = new ObservableCollection<Categories>;
-        public ObservableCollection<Categories> Categories
+        #region Cats : ObservableCollection<Categories> - Список категорий 
+        public ObservableCollection<Categories> Cats { get; set; } = new ObservableCollection<Categories>();
+
+        #endregion
+
+        #region Prods : IEnumerable<Categories> - Список категорий
+        private IEnumerable<Products> Prods => _OrderManager.Prods;       
+        #endregion
+
+        #region SelectedCategory : Categories - Выбранная категория
+        private Categories _SelectedCategory;
+        public Categories SelectedCategory
         {
-            get => _Categories;
-            private set => Set(ref _Categories, value);
+            get => _SelectedCategory;
+            set
+            {
+                Set(ref _SelectedCategory, value);
+                SelCatProducts = value == null ? Prods : Prods.Where(i => i.Category == value);
+            }
+        }
+        #endregion
+
+        #region SelectedProduct : Products - Выбранный продукт
+        private Products _SelectedProduct;
+        public Products SelectedProduct
+        {
+            get => _SelectedProduct;
+            set => Set(ref _SelectedProduct, value);
+        }
+        #endregion
+
+        #region SelCatProducts : IEnumerable<Products> - Продукты выбранной категории
+        private IEnumerable<Products> _SelCatProducts = null;
+        public IEnumerable<Products> SelCatProducts
+        {
+            get => _SelCatProducts;
+            set => Set(ref _SelCatProducts, value);
         }
         #endregion
 
@@ -53,13 +87,45 @@ namespace Bachelor_Net60.ViewModels
         #region OnOrderManagerPropertyChanged
         //private void OnOrderManagerPropertyChanged(object? sender, PropertyChangedEventArgs e)
         //{
-            
+
         //} 
         #endregion
 
-
+        #region CategoryListRefresh - обновление списка категорий
+        private void CategoryListRefresh()
+        {
+            Cats.Clear();
+            foreach (var category in _OrderManager.Cats)
+                Cats.Add(category);
+        }
+        #endregion
 
         /*----------------------------------------Команды-----------------------------------------------*/
+
+        #region TreeRefreshCommand - Обновление дерева
+        private ICommand _TreeRefreshCommand;
+        public ICommand TreeRefreshCommand => _TreeRefreshCommand
+            ??= new LambdaCommand(OnTreeRefreshCommandExecuted, CanTreeRefreshCommandExecute);
+        private bool CanTreeRefreshCommandExecute() => true;
+        private void OnTreeRefreshCommandExecuted()
+        {            
+            SelCatProducts = null;
+            SelectedCategory = null;
+            //TreeViewRefresh();
+            CategoryListRefresh();
+        }
+        #endregion
+
+        #region AddToOrderCommand - Обновление дерева
+        private ICommand _AddToOrderCommand;
+        public ICommand AddToOrderCommand => _AddToOrderCommand
+            ??= new LambdaCommand(OnAddToOrderCommandExecuted, CanAddToOrderCommandExecute);
+        private bool CanAddToOrderCommandExecute() => true;
+        private void OnAddToOrderCommandExecuted()
+        {
+            Title =  $"Doubleclick по {SelectedProduct} Работает";
+        }
+        #endregion
 
         /*--------------------------------------Конструктор---------------------------------------------*/
 
@@ -69,8 +135,8 @@ namespace Bachelor_Net60.ViewModels
             _UserDialog = UserDialog;
             _OrderManager = orderManager;
             //orderManager.PropertyChanged += OnOrderManagerPropertyChanged;
-            foreach (var category in _OrderManager.Cats)
-                Categories.Add(category);
+            //foreach (var category in _OrderManager.Cats)
+            //    Categories.Add(category);
         }        
     }
 }

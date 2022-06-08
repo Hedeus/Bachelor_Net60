@@ -6,8 +6,14 @@
         xmlns:cmd="clr-namespace:Bachelor_Net60.Infrastructure.Commands"
         xmlns:local="clr-namespace:Bachelor_Net60"
         xmlns:fa="http://schemas.fontawesome.com/icons/svg"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
-        Title="{Binding Title}" Height="450" Width="800">
+        Title="{Binding Title}" Height="450" Width="600">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding TreeRefreshCommand}"/>            
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <DockPanel>
         <Menu IsMainMenu="True">
             <MenuItem Header="Файл">
@@ -28,8 +34,8 @@
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="Auto" MinWidth="300"/>
+                <ColumnDefinition Width="200" MinWidth="150"/>
+                <ColumnDefinition Width="Auto" MinWidth="150"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <GroupBox Grid.Column="0" Header="Категорії">
@@ -45,28 +51,65 @@
                             <TextBlock Text="Обновить категории"/>
                         </StackPanel>
                     </Button>
-                    <ListView>
-                        
+                    <ListView ItemsSource="{Binding Cats}"
+                              SelectedItem="{Binding SelectedCategory}">                        
                     </ListView>                
-            </DockPanel>
+                </DockPanel>
             </GroupBox>
             <GroupBox Grid.Column="1" Header="Послуги">
-                
+                <ListView ItemsSource="{Binding SelCatProducts}"
+                          SelectedItem="{Binding SelectedProduct}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="0">
+                                <Border.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick"
+                                                  Command="{Binding DataContext.AddToOrderCommand, 
+                                                  RelativeSource={RelativeSource FindAncestor,
+                                                    AncestorType=Window}}"/>
+                                </Border.InputBindings>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </GroupBox>
-            <GroupBox Grid.Column="2" Header="Заказ">
-                <Grid>
+            <Grid Grid.Column="2">                    
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="200"/>
+                        <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <DataGrid Grid.Row="0">
-                        
-                    </DataGrid>
-                </Grid>
-            </GroupBox>
-            <GroupBox Grid.Column="2" Header="Параметры заказа">
-                
-            </GroupBox>
+                <GroupBox Header="Заказ"  Grid.Row="0">
+                    <DockPanel>
+                        <TextBox DockPanel.Dock="Top"
+                                 Text="Имя клиента"/>
+                        <DataGrid ItemsSource="{Binding}"
+                                  Grid.ColumnSpan="2"
+                                  AutoGenerateColumns="False"
+                                  GridLinesVisibility="Vertical"
+                                  VerticalGridLinesBrush="DarkGray"
+                                  AlternatingRowBackground="LightGray">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Услуга"/>
+                                <DataGridTextColumn Header="Цена"/>
+                                <DataGridTextColumn Header="К-во"/>
+                                <DataGridTextColumn Header="Сумма"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>                    
+                </GroupBox>
+                <GroupBox Grid.Row="1" Header="Параметры заказа">
+
+                </GroupBox>
+            </Grid> 
 
             <GridSplitter Grid.Column="0" HorizontalAlignment="Right" Width="3"/>
             <GridSplitter Grid.Column="1" HorizontalAlignment="Right" Width="3"/>
