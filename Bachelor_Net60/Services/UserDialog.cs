@@ -34,29 +34,6 @@ namespace Bachelor_Net60.Services
                 Message,
                 Caption,
                 MessageBoxButton.OK,
-                MessageBoxImage.Warning);
-
-        public bool Edit(object item)
-        {
-            if (item is null) throw new ArgumentNullException(nameof(item));
-            switch (item)
-            {
-                default: throw new NotSupportedException($"Редактирование обьекта типа {item.GetType().Name} не поддерживается");
-                case Categories category:
-                    return EditCategory(category);
-                case Products product:
-                    return EditProduct(product);
-            }
-        }
-
-        private static bool EditCategory(Categories category)
-        {
-            return false;
-        }
-
-        private static bool EditProduct(Products product)
-        {
-            return false;
-        }
+                MessageBoxImage.Warning);       
     }
 }

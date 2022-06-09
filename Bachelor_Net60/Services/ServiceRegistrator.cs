@@ -6,8 +6,7 @@ namespace Bachelor_Net60.Services
 {
     static class ServiceRegistrator
     {
-        public static IServiceCollection AddServices(this IServiceCollection services) => services
-            //.AddTransient<IDataService, DataService>()
+        public static IServiceCollection AddServices(this IServiceCollection services) => services            
             .AddTransient<IUserDialog, UserDialog>()
             .AddSingleton<ProductsManager>()
             .AddSingleton<OrderManager>()

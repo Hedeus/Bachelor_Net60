@@ -13,6 +13,7 @@ namespace CifrovikDEL.Context
         public DbSet<CategoryTree> Tree { get; set; }
         public CifrovikDB(DbContextOptions<CifrovikDB> options) : base(options) { }
 
+        // Обмеження унікальності
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CategoryTree>().HasIndex(i => i.DescendantId).IsUnique();
