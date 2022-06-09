@@ -13,12 +13,12 @@ namespace CifrovikDEL.Context
         public DbSet<CategoryTree> Tree { get; set; }
         public CifrovikDB(DbContextOptions<CifrovikDB> options) : base(options) { }
 
+        // Обмеження унікальності
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {            
-            modelBuilder.Entity<ProductPrice>()
-                .HasAlternateKey(a => new { a.ProductId, a.Amount, a.Price }).HasName("Uniq_Prod_Amo_Price");
-
-            //modelBuilder.Entity<ProductPrice>()
+        {
+            modelBuilder.Entity<CategoryTree>().HasIndex(i => i.DescendantId).IsUnique();
+            modelBuilder.Entity<ProductPrice>().HasIndex(i => new { i.ProductId, i.Amount, i.Price }).IsUnique()
+                                               .HasName("IX_UnProdAmoPrice");
         }
     }
 }

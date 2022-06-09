@@ -8,9 +8,9 @@ namespace CifrovikDEL.Entities
     {
         [Required]
         public virtual Products Product { get; set; }
-        public int ProductId { get; set; }
+        public int ProductId { get; set; }        
         public int Amount { get; set; }
-        [Column(TypeName = "decimal(18,2")]
+        [Column(TypeName = "decimal(18,2")]        
         public decimal Price { get; set; }
     }
 }

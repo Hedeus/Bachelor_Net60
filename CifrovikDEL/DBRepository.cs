@@ -3,11 +3,6 @@ using CifrovikDEL.Context;
 using CifrovikDEL.Entities;
 using CifrovikDEL.Entities.Base;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CifrovikDEL
 {
@@ -17,22 +12,23 @@ namespace CifrovikDEL
         private readonly DbSet<T> _Set;
 
         public bool AutosaveChanges { get; set; }
+
         public DBRepository(CifrovikDB db)
         {
             _db = db;
             _Set = db.Set<T>();
         }
-        public virtual IQueryable<T> Items => _Set;
+        public virtual IQueryable<T> Items => _Set;       
 
         public T Get(int id) => Items.SingleOrDefault(item => item.Id == id);
-        
+
         public async Task<T> GetAsync(int id, CancellationToken Cancel = default) => await Items
             .SingleOrDefaultAsync(item => item.Id == id, Cancel)
-            .ConfigureAwait(false);   
+            .ConfigureAwait(false);
 
         public T Add(T item)
         {
-            if(item is null) throw new ArgumentNullException(nameof(item));
+            if (item is null) throw new ArgumentNullException(nameof(item));
             _db.Entry(item).State = EntityState.Added;
             if (AutosaveChanges)
                 _db.SaveChanges();
@@ -66,11 +62,11 @@ namespace CifrovikDEL
 
         public void Remove(int id)
         {
-            //var item = Get(id);
-            //if (item is null) return;
-            //_db.Entry(item)/*.State = EntityState.Deleted*/;
+            var item = Get(id);
+            if (item is null) return;
+            _db.Entry(item).State = EntityState.Deleted;
 
-            _db.Remove(new T { Id = id });
+            //_db.Remove(new T { Id = id });
             if (AutosaveChanges)
                 _db.SaveChanges();
         }
@@ -81,11 +77,33 @@ namespace CifrovikDEL
             if (AutosaveChanges)
                 await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
         }
+
+        public void AutosaveOnOff(bool autosave)
+        {
+            AutosaveChanges = autosave;
+        }
+
+        public void Save()
+        {
+            if (!AutosaveChanges)
+                _db.SaveChanges();
+        }
+        public async Task SaveAsync(CancellationToken Cancel = default)
+        {
+            if (!AutosaveChanges)
+                await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+        }
     }
 
     class ProductRepository : DBRepository<Products>
     {
         public override IQueryable<Products> Items => base.Items.Include(item => item.Category);
         public ProductRepository(CifrovikDB db) : base(db) { }
+    }
+
+    class PriceRepository : DBRepository<ProductPrice>
+    {
+        public override IQueryable<ProductPrice> Items => base.Items.Include(item => item.Product);
+        public PriceRepository(CifrovikDB db) : base(db) { }
     }
 }

@@ -5,6 +5,7 @@ namespace CifrovikDEL.Entities
     public class Products : NamedEntity
     {
         public virtual Categories Category { get; set; }
-        public override string ToString() => $"Продукт {Name}";
+        public int CategoryId { get; set; }
+        public override string ToString() => $"{Name}";
     }
 }

@@ -25,6 +25,7 @@ namespace Bachelor_Net60.Data
                         break;
                 }
             })
+            //.AddSingleton<DbInitializer>()
             .AddTransient<DbInitializer>()
             .AddRepositoriesInDB()
             ;

@@ -5,11 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Bachelor_Net60
@@ -38,7 +35,7 @@ namespace Bachelor_Net60
         {
             var host = Host;
 
-            using(var scope = Services.CreateScope())
+            using (var scope = Services.CreateScope())
                 await scope.ServiceProvider.GetRequiredService<DbInitializer>().InitializeAsync();
 
             base.OnStartup(e);
